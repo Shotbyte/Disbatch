@@ -5,7 +5,7 @@ import com.github.commandant.parameter.model.Parameter;
 /**
  *
  */
-public final class ParameterUsage {
+public class ParameterUsage {
     private final String usageMessage;
     private final char parameterHead;
     private final char parameterTail;
@@ -16,7 +16,7 @@ public final class ParameterUsage {
         this.parameterTail = parameterTail;
     }
 
-    public String toString(final Parameter<?, ?> parameter) {
+    public final String toString(final Parameter<?, ?> parameter) {
         final StringBuilder builder = new StringBuilder()
                 .append(parameterHead)
                 .append(parameter.getLabel())
