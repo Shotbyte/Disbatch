@@ -1,21 +1,11 @@
 package com.github.commandant;
 
-import org.bukkit.command.PluginIdentifiableCommand;
-import org.bukkit.plugin.Plugin;
+import com.github.commandant.command.IdentifiableCommand;
 
-class IdentifiableCommandAdapter extends CommandAdapter implements PluginIdentifiableCommand {
-    private final Plugin plugin;
-
-    IdentifiableCommandAdapter(final IdentifiableCommand<?> command, final Plugin plugin) {
+class IdentifiableCommandAdapter extends CommandAdapter {
+    IdentifiableCommandAdapter(final IdentifiableCommand<?> command) {
         super(command);
-        this.plugin = plugin;
-
         setAliases(command.getAliases());
         setDescription(command.getDescription());
-    }
-
-    @Override
-    public Plugin getPlugin() {
-        return plugin;
     }
 }

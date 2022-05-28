@@ -1,4 +1,4 @@
-package com.github.commandant;
+package com.github.commandant.command;
 
 import org.bukkit.command.CommandSender;
 

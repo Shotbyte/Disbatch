@@ -1,4 +1,4 @@
-package com.github.commandant.parameter;
+package com.github.commandant.command.parameter;
 
 /**
  *

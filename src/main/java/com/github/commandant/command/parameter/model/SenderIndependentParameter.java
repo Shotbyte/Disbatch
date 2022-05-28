@@ -1,6 +1,6 @@
-package com.github.commandant.parameter.model;
+package com.github.commandant.command.parameter.model;
 
-import com.github.commandant.parameter.ArgumentQueue;
+import com.github.commandant.command.parameter.ArgumentQueue;
 import org.bukkit.command.CommandSender;
 
 /**

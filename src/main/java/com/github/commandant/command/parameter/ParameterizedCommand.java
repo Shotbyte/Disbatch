@@ -1,7 +1,7 @@
-package com.github.commandant.parameter;
+package com.github.commandant.command.parameter;
 
-import com.github.commandant.Command;
-import com.github.commandant.parameter.model.Parameter;
+import com.github.commandant.command.Command;
+import com.github.commandant.command.parameter.model.Parameter;
 import org.bukkit.command.CommandSender;
 
 import java.util.Collections;

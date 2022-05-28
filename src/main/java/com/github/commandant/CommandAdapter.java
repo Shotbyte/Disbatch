@@ -1,5 +1,6 @@
 package com.github.commandant;
 
+import com.github.commandant.command.Command;
 import net.jodah.typetools.TypeResolver;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.defaults.BukkitCommand;

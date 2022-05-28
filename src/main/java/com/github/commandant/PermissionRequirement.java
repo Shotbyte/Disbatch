@@ -1,4 +1,3 @@
-package com.github.commandant;
 
 import org.bukkit.command.CommandSender;
 

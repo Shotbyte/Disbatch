@@ -1,5 +1,7 @@
 package com.github.commandant;
 
+import com.github.commandant.command.Command;
+import com.github.commandant.command.IdentifiableCommand;
 import lombok.experimental.UtilityClass;
 import net.jodah.typetools.TypeResolver;
 import org.bukkit.command.CommandMap;
@@ -45,10 +47,18 @@ public class Commandant {
     /**
      * @param command
      * @param map
+     */
+    public void register(final IdentifiableCommand<?> command, final CommandMap map) {
+        register(new IdentifiableCommandAdapter(command), map);
+    }
+
+    /**
+     * @param command
+     * @param map
      * @param plugin
      */
     public void register(final IdentifiableCommand<?> command, final CommandMap map, final Plugin plugin) {
-        register(new IdentifiableCommandAdapter(command, plugin), map);
+        register(new PluginIdentifiableCommandAdapter(command, plugin), map);
     }
 
     private void register(final CommandAdapter adapter, final CommandMap map) {

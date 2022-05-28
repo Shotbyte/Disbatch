@@ -1,4 +1,4 @@
-package com.github.commandant.parameter.model;
+package com.github.commandant.command.parameter.model;
 
 import org.bukkit.command.CommandSender;
 
