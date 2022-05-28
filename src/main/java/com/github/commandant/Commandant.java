@@ -9,7 +9,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
- * A namespace for registering a {@link CommandModel}.
+ * A namespace for registering a {@link Command}.
  */
 @UtilityClass
 public class Commandant {
