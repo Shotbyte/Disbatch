@@ -2,6 +2,7 @@ package com.github.commandant.command;
 
 import org.bukkit.command.CommandSender;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -9,6 +10,8 @@ import java.util.function.Supplier;
  * @param <T>
  */
 public class PermissionRequirement<T extends CommandSender> implements IdentifiableCommand<T> {
+    private static final Supplier<String> EMPTY_DESCRIPTION = () -> "";
+
     private final Command<T> innerCommand;
     private final String requiredPermission;
     private final String noPermissionMessage;
@@ -16,7 +19,7 @@ public class PermissionRequirement<T extends CommandSender> implements Identifia
     private final Supplier<List<String>> aliases;
 
     public PermissionRequirement(final Command<T> innerCommand, final String requiredPermission, final String noPermissionMessage) {
-        this(innerCommand, requiredPermission, noPermissionMessage, null, null);
+        this(innerCommand, requiredPermission, noPermissionMessage, EMPTY_DESCRIPTION, Collections::emptyList);
     }
 
     public PermissionRequirement(final IdentifiableCommand<T> innerCommand, final String requiredPermission, final String noPermissionMessage) {
