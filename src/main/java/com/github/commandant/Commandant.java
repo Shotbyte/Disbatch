@@ -5,6 +5,7 @@ import net.jodah.typetools.TypeResolver;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -37,6 +38,19 @@ public class Commandant {
      * @param map
      */
     public void register(final Command<?> command, final CommandMap map) {
-        map.register(command.getLabel(), "", new CommandAdapter(command));
+        register(new CommandAdapter(command), map);
+    }
+
+    /**
+     * @param command
+     * @param map
+     * @param plugin
+     */
+    public void register(final IdentifiableCommand<?> command, final CommandMap map, final Plugin plugin) {
+        register(new IdentifiableCommandAdapter(command, plugin), map);
+    }
+
+    private void register(final CommandAdapter adapter, final CommandMap map) {
+        map.register(adapter.getLabel(), adapter);
     }
 }
