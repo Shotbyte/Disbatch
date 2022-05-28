@@ -27,6 +27,7 @@ public class Commandant {
         pluginCommand.setExecutor((sender, serverCommand, label, args) -> {
             if (senderType.isInstance(sender.getClass()))
                 castedCommand.execute(sender, args);
+
             return true;
         });
 
