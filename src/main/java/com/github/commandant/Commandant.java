@@ -4,6 +4,7 @@ import com.github.commandant.command.Command;
 import com.github.commandant.command.IdentifiableCommand;
 import lombok.experimental.UtilityClass;
 import net.jodah.typetools.TypeResolver;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
@@ -27,7 +28,7 @@ public class Commandant {
         final Class<?> senderType = TypeResolver.resolveRawArgument(Command.class, castedCommand.getClass());
 
         pluginCommand.setExecutor((sender, serverCommand, label, args) -> {
-            if (senderType.isInstance(sender.getClass()))
+            if (senderType.isInstance(sender))
                 castedCommand.execute(sender, args);
 
             return true;

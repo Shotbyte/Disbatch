@@ -21,7 +21,7 @@ class CommandAdapter extends BukkitCommand {
 
     @Override
     public boolean execute(final CommandSender sender, final String commandLabel, final String[] args) {
-        if (senderType.isInstance(sender.getClass()))
+        if (senderType.isInstance(sender))
             command.execute(sender, args);
 
         return true;
