@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @param <T>
  */
-public interface CommandModel<T extends CommandSender> {
+public interface Command<T extends CommandSender> {
 
     /**
      * @param sender

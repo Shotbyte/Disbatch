@@ -1,21 +1,21 @@
 package com.github.commandant;
 
 import net.jodah.typetools.TypeResolver;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.defaults.BukkitCommand;
 
 import java.util.List;
 
-class CommandModelAdapter extends Command {
-    private final CommandModel<CommandSender> command;
+class CommandAdapter extends BukkitCommand {
+    private final Command<CommandSender> command;
     private final Class<?> senderType;
 
     @SuppressWarnings("unchecked")
-    CommandModelAdapter(final CommandModel<?> command) {
+    CommandAdapter(final Command<?> command) {
         super(command.getLabel());
-        this.command = (CommandModel<CommandSender>) command;
+        this.command = (Command<CommandSender>) command;
 
-        senderType = TypeResolver.resolveRawArgument(CommandModel.class, command.getClass());
+        senderType = TypeResolver.resolveRawArgument(Command.class, command.getClass());
     }
 
     @Override

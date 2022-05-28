@@ -18,10 +18,10 @@ public class Commandant {
      * @param plugin
      */
     @SuppressWarnings("unchecked")
-    public void register(final CommandModel<?> command, final JavaPlugin plugin) {
+    public void register(final Command<?> command, final JavaPlugin plugin) {
         final PluginCommand pluginCommand = plugin.getCommand(command.getLabel());
-        final CommandModel<CommandSender> castedCommand = (CommandModel<CommandSender>) command;
-        final Class<?> senderType = TypeResolver.resolveRawArgument(CommandModel.class, castedCommand.getClass());
+        final Command<CommandSender> castedCommand = (Command<CommandSender>) command;
+        final Class<?> senderType = TypeResolver.resolveRawArgument(Command.class, castedCommand.getClass());
 
         pluginCommand.setExecutor((sender, serverCommand, label, args) -> {
             if (senderType.isInstance(sender.getClass()))
@@ -36,7 +36,7 @@ public class Commandant {
      * @param command
      * @param map
      */
-    public void register(final CommandModel<?> command, final CommandMap map) {
-        map.register(command.getLabel(), "", new CommandModelAdapter(command));
+    public void register(final Command<?> command, final CommandMap map) {
+        map.register(command.getLabel(), "", new CommandAdapter(command));
     }
 }

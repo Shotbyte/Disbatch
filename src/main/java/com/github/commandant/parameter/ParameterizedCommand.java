@@ -1,6 +1,6 @@
 package com.github.commandant.parameter;
 
-import com.github.commandant.CommandModel;
+import com.github.commandant.Command;
 import com.github.commandant.parameter.model.Parameter;
 import org.bukkit.command.CommandSender;
 
@@ -11,7 +11,7 @@ import java.util.List;
  * @param <K>
  * @param <V>
  */
-public abstract class ParameterizedCommand<K extends CommandSender, V> implements CommandModel<K> {
+public abstract class ParameterizedCommand<K extends CommandSender, V> implements Command<K> {
     private final Parameter<? super K, V> parameter;
     private final ParameterUsage usage;
 

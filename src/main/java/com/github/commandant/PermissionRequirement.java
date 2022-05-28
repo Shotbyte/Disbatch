@@ -7,16 +7,16 @@ import java.util.List;
 /**
  * @param <T>
  */
-public class PermissionRequirement<T extends CommandSender> implements CommandModel<T> {
-    private final CommandModel<T> innerCommand;
+public class PermissionRequirement<T extends CommandSender> implements Command<T> {
+    private final Command<T> innerCommand;
     private final String requiredPermission;
     private final String noPermissionMessage;
 
-    public PermissionRequirement(final CommandModel<T> innerCommand, final String requiredPermission) {
+    public PermissionRequirement(final Command<T> innerCommand, final String requiredPermission) {
         this(innerCommand, requiredPermission, null);
     }
 
-    public PermissionRequirement(final CommandModel<T> innerCommand, final String requiredPermission, final String noPermissionMessage) {
+    public PermissionRequirement(final Command<T> innerCommand, final String requiredPermission, final String noPermissionMessage) {
         this.innerCommand = innerCommand;
         this.requiredPermission = requiredPermission;
         this.noPermissionMessage = noPermissionMessage;
