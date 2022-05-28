@@ -12,7 +12,7 @@ class CommandModelAdapter extends Command {
 
     @SuppressWarnings("unchecked")
     CommandModelAdapter(final CommandModel<?> command) {
-        super("");
+        super(command.getLabel());
         this.command = (CommandModel<CommandSender>) command;
 
         senderType = TypeResolver.resolveRawArgument(CommandModel.class, command.getClass());
