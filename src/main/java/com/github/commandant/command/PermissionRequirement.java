@@ -35,9 +35,9 @@ public class PermissionRequirement<T extends CommandSender> implements Identifia
     }
 
     @Override
-    public final void execute(final T sender, final String[] args) {
+    public final void execute(final T sender, final String aliasLabel, final String[] args) {
         if (sender.hasPermission(requiredPermission))
-            innerCommand.execute(sender, args);
+            innerCommand.execute(sender, aliasLabel, args);
         else if (noPermissionMessage != null && !noPermissionMessage.isEmpty())
             sender.sendMessage(noPermissionMessage.replace("%permission", requiredPermission));
     }

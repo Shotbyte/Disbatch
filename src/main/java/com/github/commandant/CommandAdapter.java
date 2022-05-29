@@ -20,9 +20,9 @@ class CommandAdapter extends BukkitCommand {
     }
 
     @Override
-    public boolean execute(final CommandSender sender, final String commandLabel, final String[] args) {
+    public boolean execute(final CommandSender sender, final String aliasLabel, final String[] args) {
         if (senderType.isInstance(sender))
-            command.execute(sender, args);
+            command.execute(sender, aliasLabel, args);
 
         return true;
     }

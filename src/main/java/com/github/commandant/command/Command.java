@@ -12,9 +12,10 @@ public interface Command<T extends CommandSender> {
 
     /**
      * @param sender
+     * @param aliasLabel
      * @param args
      */
-    void execute(T sender, String[] args);
+    void execute(T sender, final String aliasLabel, String[] args);
 
     /**
      * @param sender

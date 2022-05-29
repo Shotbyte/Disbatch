@@ -21,20 +21,21 @@ public abstract class ParameterizedCommand<K extends CommandSender, V> implement
     }
 
     @Override
-    public final void execute(final K sender, final String[] args) {
+    public final void execute(final K sender, final String aliasLabel, final String[] args) {
         final ParameterArgumentation argumentation = new ParameterArgumentation(args);
 
-            execute(sender, parameter.parse(argumentation, sender));
         if (args.length == parameter.getSize() && parameter.canParse(argumentation))
+            execute(sender, aliasLabel, parameter.parse(argumentation, sender));
         else
-            sender.sendMessage(usage.toString(getLabel(), parameter));
+            sender.sendMessage(usage.toString(aliasLabel, parameter));
     }
 
     /**
      * @param sender
+     * @param aliasLabel
      * @param argument
      */
-    protected abstract void execute(final K sender, final V argument);
+    protected abstract void execute(final K sender, final String aliasLabel, final V argument);
 
     @Override
     public final List<String> tabComplete(final K sender, final String[] args) {

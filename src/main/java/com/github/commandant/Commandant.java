@@ -27,9 +27,9 @@ public class Commandant {
         final Command<CommandSender> castedCommand = (Command<CommandSender>) command;
         final Class<?> senderType = TypeResolver.resolveRawArgument(Command.class, castedCommand.getClass());
 
-        pluginCommand.setExecutor((sender, serverCommand, label, args) -> {
+        pluginCommand.setExecutor((sender, serverCommand, aliasLabel, args) -> {
             if (senderType.isInstance(sender))
-                castedCommand.execute(sender, args);
+                castedCommand.execute(sender, aliasLabel, args);
 
             return true;
         });
