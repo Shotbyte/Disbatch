@@ -27,7 +27,7 @@ public abstract class ParameterizedCommand<K extends CommandSender, V> implement
         if (args.length <= parameter.getSize() && parameter.canParse(argumentation))
             execute(sender, parameter.parse(argumentation, sender));
         else
-            sender.sendMessage(usage.toString(parameter));
+            sender.sendMessage(usage.toString(getLabel(), parameter));
     }
 
     /**

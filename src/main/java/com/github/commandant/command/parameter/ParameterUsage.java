@@ -16,8 +16,10 @@ public class ParameterUsage {
         this.parameterTail = parameterTail;
     }
 
-    public final String toString(final Parameter<?, ?> parameter) {
-        final StringBuilder builder = new StringBuilder()
+    public final String toString(final String commandLabel, final Parameter<?, ?> parameter) {
+        final StringBuilder builder = new StringBuilder("/")
+                .append(commandLabel)
+                .append(" ")
                 .append(parameterHead)
                 .append(parameter.getLabel())
                 .append(parameterTail)
