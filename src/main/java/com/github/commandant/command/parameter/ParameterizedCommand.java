@@ -24,7 +24,7 @@ public abstract class ParameterizedCommand<K extends CommandSender, V> implement
     public final void execute(final K sender, final String[] args) {
         final ParameterArgumentation argumentation = new ParameterArgumentation(args, parameter);
 
-        if (args.length >= parameter.getSize() && parameter.canParse(argumentation))
+        if (args.length <= parameter.getSize() && parameter.canParse(argumentation))
             execute(sender, parameter.parse(argumentation, sender));
         else
             sender.sendMessage(usage.toString(parameter));
@@ -38,7 +38,7 @@ public abstract class ParameterizedCommand<K extends CommandSender, V> implement
 
     @Override
     public final List<String> tabComplete(final K sender, final String[] args) {
-        return args.length < parameter.getSize()
+        return args.length <= parameter.getSize()
                 ? tabComplete(sender, args[args.length - 1])
                 : Collections.emptyList();
     }

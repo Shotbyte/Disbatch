@@ -10,7 +10,7 @@ class ParameterArgumentation implements ArgumentSelection, ArgumentQueue {
 
     ParameterArgumentation(final String[] args, final Parameter<?, ?> parameter) {
         this.args = args;
-        index = (args.length - parameter.getSize()) - 1;
+        index = args.length - parameter.getSize();
     }
 
     @Override
@@ -36,7 +36,7 @@ class ParameterArgumentation implements ArgumentSelection, ArgumentQueue {
     }
 
     private class SelectionIterator implements Iterator<String> {
-        private int index = ParameterArgumentation.this.index - 1;
+        private int index;
 
         @Override
         public boolean hasNext() {
