@@ -44,7 +44,9 @@ public class PermissionRequirement<T extends CommandSender> implements Identifia
 
     @Override
     public final List<String> tabComplete(final T sender, final String[] args) {
-        return innerCommand.tabComplete(sender, args);
+        return sender.hasPermission(requiredPermission)
+                ? innerCommand.tabComplete(sender, args)
+                : Collections.emptyList();
     }
 
     @Override
