@@ -22,7 +22,7 @@ public abstract class ParameterizedCommand<K extends CommandSender, V> implement
 
     @Override
     public final void execute(final K sender, final String[] args) {
-        final ParameterArgumentation argumentation = new ParameterArgumentation(args, parameter);
+        final ParameterArgumentation argumentation = new ParameterArgumentation(args);
 
         if (args.length <= parameter.getSize() && parameter.canParse(argumentation))
             execute(sender, parameter.parse(argumentation, sender));

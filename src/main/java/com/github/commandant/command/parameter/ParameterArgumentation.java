@@ -1,16 +1,13 @@
 package com.github.commandant.command.parameter;
 
-import com.github.commandant.command.parameter.model.Parameter;
-
 import java.util.Iterator;
 
 class ParameterArgumentation implements ArgumentSelection, ArgumentQueue {
     private final String[] args;
     private int index;
 
-    ParameterArgumentation(final String[] args, final Parameter<?, ?> parameter) {
+    ParameterArgumentation(final String[] args) {
         this.args = args;
-        index = args.length - parameter.getSize();
     }
 
     @Override
