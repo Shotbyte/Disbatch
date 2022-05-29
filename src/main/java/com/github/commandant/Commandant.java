@@ -11,6 +11,8 @@ import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.lang.reflect.Field;
+
 /**
  * A namespace for registering a {@link Command}.
  */
@@ -64,5 +66,18 @@ public class Commandant {
 
     private void register(final CommandAdapter adapter, final CommandMap map) {
         map.register(adapter.getLabel(), adapter);
+    }
+
+    /**
+     * @return
+     */
+    public CommandMap getServerCommandMap() {
+        try {
+            final Field field = Bukkit.getPluginManager().getClass().getDeclaredField("commandMap");
+            field.setAccessible(true);
+            return (CommandMap) field.get(Bukkit.getPluginManager());
+        } catch (final IllegalAccessException | NoSuchFieldException e) {
+            throw new IllegalStateException(e);
+        }
     }
 }
