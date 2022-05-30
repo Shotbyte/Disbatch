@@ -25,7 +25,7 @@ public abstract class CommandGroup<T extends CommandSender> extends Parameterize
     @Override
     protected final void execute(final T sender, final String aliasLabel, final Command<CommandSender> subcommand) {
         final String[] lastArgs = parameter.getLastParsedArgs();
-        final String[] newArgs = Arrays.copyOfRange(lastArgs, 1, lastArgs.length - 1);
+        final String[] newArgs = Arrays.copyOfRange(lastArgs, 1, lastArgs.length);
         subcommand.execute(sender, aliasLabel + " " + subcommand.getLabel(), newArgs);
     }
 
