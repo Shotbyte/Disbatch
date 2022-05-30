@@ -7,14 +7,14 @@ import org.bukkit.command.CommandSender;
  * @param <V>
  */
 public abstract class AbstractParameter<K extends CommandSender, V> implements Parameter<K, V> {
-    private final String label;
+    private final String[] labels;
 
-    protected AbstractParameter(final String label) {
-        this.label = label;
+    protected AbstractParameter(final String... labels) {
+        this.labels = labels;
     }
 
     @Override
-    public final String getLabel() {
-        return label;
+    public final String[] getLabels() {
+        return labels;
     }
 }

@@ -1,7 +1,5 @@
 package com.github.commandant.command.parameter.model;
 
-import com.github.commandant.command.parameter.ArgumentQueue;
-import com.github.commandant.command.parameter.ArgumentSelection;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -14,13 +12,13 @@ public class PlayerParameter extends SenderIndependentParameter<Player> {
     }
 
     @Override
-    public boolean canParse(final ArgumentSelection selection) {
-        return getPlayer(selection.firstArgument()) != null;
+    public boolean canParse(final String[] args) {
+        return getPlayer(args[0]) != null;
     }
 
     @Override
-    protected Player parse(final ArgumentQueue queue) {
-        return getPlayer(queue.nextArgument());
+    protected Player parse(final String[] args) {
+        return getPlayer(args[0]);
     }
 
     private Player getPlayer(final String argument) {

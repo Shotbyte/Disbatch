@@ -1,7 +1,5 @@
 package com.github.commandant.command.parameter.model;
 
-import com.github.commandant.command.parameter.ArgumentQueue;
-import com.github.commandant.command.parameter.ArgumentSelection;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
@@ -14,13 +12,13 @@ public class WorldParameter extends SenderIndependentParameter<World> {
     }
 
     @Override
-    public boolean canParse(final ArgumentSelection selection) {
-        return getWorld(selection.firstArgument()) != null;
+    public boolean canParse(final String[] args) {
+        return getWorld(args[0]) != null;
     }
 
     @Override
-    protected World parse(final ArgumentQueue queue) {
-        return getWorld(queue.nextArgument());
+    protected World parse(final String[] args) {
+        return getWorld(args[0]);
     }
 
     private World getWorld(final String argument) {

@@ -1,7 +1,5 @@
 package com.github.commandant.command.parameter;
 
-import com.github.commandant.command.parameter.model.Parameter;
-
 /**
  *
  */
@@ -16,15 +14,12 @@ public class ParameterUsage {
         this.parameterTail = parameterTail;
     }
 
-    public final String toString(final String commandLabel, final Parameter<?, ?> parameter) {
-        final StringBuilder builder = new StringBuilder("/")
-                .append(commandLabel)
-                .append(" ")
-                .append(parameterHead)
-                .append(parameter.getLabel())
-                .append(parameterTail)
-                .append(" ");
+    public final String toMessage(final String aliasLabel, final String[] labels) {
+        final StringBuilder builder = new StringBuilder("/").append(aliasLabel);
 
-        return usageMessage.replace("%usage", builder.substring(0, builder.length() - 1));
+        for (final String label : labels)
+            builder.append(" ").append(parameterHead).append(label).append(parameterTail);
+
+        return usageMessage.replace("%usage", builder);
     }
 }

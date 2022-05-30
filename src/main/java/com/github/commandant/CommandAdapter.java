@@ -1,6 +1,7 @@
 package com.github.commandant;
 
 import com.github.commandant.command.Command;
+import com.google.common.base.Strings;
 import net.jodah.typetools.TypeResolver;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.defaults.BukkitCommand;
@@ -23,6 +24,8 @@ class CommandAdapter extends BukkitCommand {
     public boolean execute(final CommandSender sender, final String aliasLabel, final String[] args) {
         if (senderType.isInstance(sender))
             command.execute(sender, aliasLabel, args);
+        else if (!Strings.isNullOrEmpty(command.getValidSenderMessage()))
+            sender.sendMessage(command.getValidSenderMessage());
 
         return true;
     }

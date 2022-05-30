@@ -2,6 +2,7 @@ package com.github.commandant;
 
 import com.github.commandant.command.Command;
 import com.github.commandant.command.IdentifiableCommand;
+import com.google.common.base.Strings;
 import lombok.experimental.UtilityClass;
 import net.jodah.typetools.TypeResolver;
 import org.bukkit.Bukkit;
@@ -32,6 +33,8 @@ public class Commandant {
         pluginCommand.setExecutor((sender, serverCommand, aliasLabel, args) -> {
             if (senderType.isInstance(sender))
                 castedCommand.execute(sender, aliasLabel, args);
+            else if (!Strings.isNullOrEmpty(castedCommand.getValidSenderMessage()))
+                sender.sendMessage(castedCommand.getValidSenderMessage());
 
             return true;
         });

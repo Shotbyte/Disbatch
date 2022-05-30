@@ -1,7 +1,5 @@
 package com.github.commandant.command.parameter.model;
 
-import com.github.commandant.command.parameter.ArgumentQueue;
-import com.github.commandant.command.parameter.ArgumentSelection;
 import org.bukkit.command.CommandSender;
 
 /**
@@ -11,22 +9,22 @@ import org.bukkit.command.CommandSender;
 public interface Parameter<K extends CommandSender, V> {
 
     /**
-     * @param selection
+     * @param args
      * @return
      */
-    boolean canParse(ArgumentSelection selection);
+    boolean canParse(String[] args);
 
     /**
-     * @param queue
+     * @param args
      * @param sender
      * @return
      */
-    V parse(ArgumentQueue queue, K sender);
+    V parse(String[] args, K sender);
 
     /**
      * @return
      */
-    String getLabel();
+    String[] getLabels();
 
     /**
      * @return

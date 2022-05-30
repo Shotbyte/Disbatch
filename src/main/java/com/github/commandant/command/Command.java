@@ -1,5 +1,6 @@
 package com.github.commandant.command;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.CommandSender;
 
 import java.util.Collections;
@@ -15,7 +16,7 @@ public interface Command<T extends CommandSender> {
      * @param aliasLabel
      * @param args
      */
-    void execute(T sender, final String aliasLabel, String[] args);
+    void execute(T sender, String aliasLabel, String[] args);
 
     /**
      * @param sender
@@ -24,6 +25,13 @@ public interface Command<T extends CommandSender> {
      */
     default List<String> tabComplete(final T sender, final String[] args) {
         return Collections.emptyList();
+    }
+
+    /**
+     * @return
+     */
+    default String getValidSenderMessage() {
+        return StringUtils.EMPTY;
     }
 
     /**

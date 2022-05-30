@@ -1,8 +1,5 @@
 package com.github.commandant.command.parameter.model;
 
-import com.github.commandant.command.parameter.ArgumentQueue;
-import com.github.commandant.command.parameter.ArgumentSelection;
-
 import java.util.UUID;
 
 /**
@@ -16,13 +13,13 @@ public class UUIDParameter extends SenderIndependentParameter<UUID> {
     }
 
     @Override
-    public boolean canParse(final ArgumentSelection selection) {
-        return UUID_REGEX.matches(selection.firstArgument());
+    public boolean canParse(final String[] args) {
+        return UUID_REGEX.matches(args[0]);
     }
 
     @Override
-    protected UUID parse(final ArgumentQueue queue) {
-        return UUID.fromString(queue.nextArgument());
+    protected UUID parse(final String[] args) {
+        return UUID.fromString(args[0]);
     }
 
     @Override

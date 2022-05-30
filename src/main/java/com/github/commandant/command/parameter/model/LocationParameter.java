@@ -1,7 +1,5 @@
 package com.github.commandant.command.parameter.model;
 
-import com.github.commandant.command.parameter.ArgumentQueue;
-import com.github.commandant.command.parameter.ArgumentSelection;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -11,16 +9,16 @@ public class LocationParameter extends AbstractParameter<Player, Location> {
     }
 
     @Override
-    public boolean canParse(final ArgumentSelection selection) {
+    public boolean canParse(final String[] args) {
         return false;
     }
 
     @Override
-    public Location parse(final ArgumentQueue queue, final Player sender) {
+    public Location parse(final String[] args, final Player sender) {
         return new Location(sender.getWorld(),
-                parseDouble(queue.nextArgument()),
-                parseDouble(queue.nextArgument()),
-                parseDouble(queue.nextArgument()));
+                parseDouble(args[0]),
+                parseDouble(args[1]),
+                parseDouble(args[2]));
     }
 
     private double parseDouble(final String argument) {

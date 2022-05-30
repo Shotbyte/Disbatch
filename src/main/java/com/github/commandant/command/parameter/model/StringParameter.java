@@ -1,21 +1,18 @@
 package com.github.commandant.command.parameter.model;
 
-import com.github.commandant.command.parameter.ArgumentQueue;
-import com.github.commandant.command.parameter.ArgumentSelection;
-
 public class StringParameter extends SenderIndependentParameter<String> {
     public StringParameter(final String label) {
         super(label);
     }
 
     @Override
-    protected String parse(final ArgumentQueue queue) {
-        return queue.nextArgument();
+    protected String parse(final String[] args) {
+        return args[0];
     }
 
     @Override
-    public boolean canParse(final ArgumentSelection selection) {
-        return !selection.firstArgument().isEmpty();
+    public boolean canParse(final String[] args) {
+        return !args[0].isEmpty();
     }
 
     @Override

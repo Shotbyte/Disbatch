@@ -13,6 +13,7 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <shadedPattern>${project.groupId}.dependency</shadedPattern>
     </properties>
 
     <distributionManagement>
@@ -41,7 +42,7 @@
                             <relocations>
                                 <relocation>
                                     <pattern>net.jodah</pattern>
-                                    <shadedPattern>${project.groupId}.lib</shadedPattern>
+                                    <shadedPattern>${shadedPattern}</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
