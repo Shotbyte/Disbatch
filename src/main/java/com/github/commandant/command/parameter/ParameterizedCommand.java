@@ -33,7 +33,7 @@ public abstract class ParameterizedCommand<K extends CommandSender, V> implement
             sender.sendMessage(usage.toMessage(aliasLabel, parameter.getLabels()));
         else if (parameter.canParse(args))
             execute(sender, aliasLabel, parameter.parse(args, sender));
-        else if (!Strings.isNullOrEmpty(invalidArgumentMessage))
+        else if (Strings.isNullOrEmpty(invalidArgumentMessage))
             sender.sendMessage(usage.toMessage(aliasLabel, parameter.getLabels()));
         else
             sender.sendMessage(invalidArgumentMessage);
