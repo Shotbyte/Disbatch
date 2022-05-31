@@ -29,11 +29,9 @@ public abstract class ParameterizedCommand<K extends CommandSender, V> implement
 
     @Override
     public final void execute(final K sender, final String aliasLabel, final String[] args) {
-        if (args.length != parameter.getSize())
-            sender.sendMessage(usage.toMessage(aliasLabel, parameter.getLabels()));
-        else if (parameter.canParse(args))
+        if (args.length == parameter.getSize() && parameter.canParse(args))
             execute(sender, aliasLabel, parameter.parse(args, sender));
-        else if (Strings.isNullOrEmpty(invalidArgumentMessage))
+        else if (args.length != parameter.getSize() || Strings.isNullOrEmpty(invalidArgumentMessage))
             sender.sendMessage(usage.toMessage(aliasLabel, parameter.getLabels()));
         else
             sender.sendMessage(invalidArgumentMessage);
