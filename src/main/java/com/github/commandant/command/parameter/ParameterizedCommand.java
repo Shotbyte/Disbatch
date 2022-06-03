@@ -29,10 +29,13 @@ public abstract class ParameterizedCommand<K extends CommandSender, V> implement
 
     @Override
     public final void execute(final K sender, final String aliasLabel, final String[] args) {
-        if (args.length == parameter.getSize() && parameter.canParse(args))
+        final String[] labels = parameter.getLabels();
+        final boolean isCompatibleLength = args.length >= labels.length && args.length <= parameter.getSize();
+
+        if (isCompatibleLength && parameter.canParse(args))
             execute(sender, aliasLabel, parameter.parse(args, sender));
-        else if (args.length != parameter.getSize() || Strings.isNullOrEmpty(invalidArgumentMessage))
-            sender.sendMessage(usage.toMessage(aliasLabel, parameter.getLabels()));
+        else if (!isCompatibleLength || Strings.isNullOrEmpty(invalidArgumentMessage))
+            sender.sendMessage(usage.toMessage(aliasLabel, labels));
         else
             sender.sendMessage(invalidArgumentMessage);
     }
@@ -45,7 +48,7 @@ public abstract class ParameterizedCommand<K extends CommandSender, V> implement
     protected abstract void execute(final K sender, final String aliasLabel, final V argument);
 
     @Override
-    public final List<String> tabComplete(final K sender, final String[] args) {
+    public List<String> tabComplete(final K sender, final String[] args) {
         return args.length <= parameter.getSize()
                 ? tabComplete(sender, args[args.length - 1])
                 : Collections.emptyList();

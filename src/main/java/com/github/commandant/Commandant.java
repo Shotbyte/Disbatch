@@ -1,7 +1,7 @@
 package com.github.commandant;
 
 import com.github.commandant.command.Command;
-import com.github.commandant.command.IdentifiableCommand;
+import com.github.commandant.command.CommandDescriptor;
 import com.google.common.base.Strings;
 import lombok.experimental.UtilityClass;
 import net.jodah.typetools.TypeResolver;
@@ -9,7 +9,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.lang.reflect.Field;
@@ -50,21 +49,8 @@ public class Commandant {
         register(new CommandAdapter(command), map);
     }
 
-    /**
-     * @param command
-     * @param map
-     */
-    public void register(final IdentifiableCommand<?> command, final CommandMap map) {
-        register(new IdentifiableCommandAdapter(command), map);
-    }
-
-    /**
-     * @param command
-     * @param map
-     * @param plugin
-     */
-    public void register(final IdentifiableCommand<?> command, final CommandMap map, final Plugin plugin) {
-        register(new PluginIdentifiableCommandAdapter(command, plugin), map);
+    public void register(final Command<?> command, final CommandDescriptor descriptor, final CommandMap map) {
+        register(new IdentifiableCommandAdapter(command, descriptor), map);
     }
 
     private void register(final CommandAdapter adapter, final CommandMap map) {

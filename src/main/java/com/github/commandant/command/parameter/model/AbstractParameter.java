@@ -17,4 +17,12 @@ public abstract class AbstractParameter<K extends CommandSender, V> implements P
     public final String[] getLabels() {
         return labels;
     }
+
+    /**
+     * @return
+     */
+    @Override
+    public int getSize() {
+        return labels.length;
+    }
 }

@@ -5,20 +5,20 @@ package com.github.commandant.command.parameter;
  */
 public class ParameterUsage {
     private final String usageMessage;
-    private final char parameterHead;
-    private final char parameterTail;
+    private final char labelHead;
+    private final char labelTail;
 
-    public ParameterUsage(final String usageMessage, final char parameterHead, final char parameterTail) {
+    public ParameterUsage(final String usageMessage, final char labelHead, final char labelTail) {
         this.usageMessage = usageMessage;
-        this.parameterHead = parameterHead;
-        this.parameterTail = parameterTail;
+        this.labelHead = labelHead;
+        this.labelTail = labelTail;
     }
 
-    public final String toMessage(final String aliasLabel, final String[] labels) {
-        final StringBuilder builder = new StringBuilder("/").append(aliasLabel);
+    public final String toMessage(final String commandLabel, final String... labels) {
+        final StringBuilder builder = new StringBuilder("/").append(commandLabel);
 
         for (final String label : labels)
-            builder.append(" ").append(parameterHead).append(label).append(parameterTail);
+            builder.append(" ").append(labelHead).append(label).append(labelTail);
 
         return usageMessage.replace("%usage", builder);
     }

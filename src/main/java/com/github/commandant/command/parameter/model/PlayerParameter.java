@@ -24,9 +24,4 @@ public class PlayerParameter extends SenderIndependentParameter<Player> {
     private Player getPlayer(final String argument) {
         return Bukkit.getPlayer(argument);
     }
-
-    @Override
-    public int getSize() {
-        return 1;
-    }
 }

@@ -21,9 +21,4 @@ public class UUIDParameter extends SenderIndependentParameter<UUID> {
     protected UUID parse(final String[] args) {
         return UUID.fromString(args[0]);
     }
-
-    @Override
-    public int getSize() {
-        return 1;
-    }
 }

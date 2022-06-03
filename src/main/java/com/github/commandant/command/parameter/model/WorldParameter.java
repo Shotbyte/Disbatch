@@ -24,9 +24,4 @@ public class WorldParameter extends SenderIndependentParameter<World> {
     private World getWorld(final String argument) {
         return Bukkit.getWorld(argument);
     }
-
-    @Override
-    public int getSize() {
-        return 1;
-    }
 }

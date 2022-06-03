@@ -1,11 +1,12 @@
 package com.github.commandant;
 
-import com.github.commandant.command.IdentifiableCommand;
+import com.github.commandant.command.Command;
+import com.github.commandant.command.CommandDescriptor;
 
 class IdentifiableCommandAdapter extends CommandAdapter {
-    IdentifiableCommandAdapter(final IdentifiableCommand<?> command) {
+    IdentifiableCommandAdapter(final Command<?> command, final CommandDescriptor descriptor) {
         super(command);
-        setAliases(command.getAliases());
-        setDescription(command.getDescription());
+        setAliases(descriptor.getAliases());
+        setDescription(descriptor.getDescription());
     }
 }
