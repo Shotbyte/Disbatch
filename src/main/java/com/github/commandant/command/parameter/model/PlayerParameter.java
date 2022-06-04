@@ -4,11 +4,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 /**
- *
+ * Retrieves an online {@link Player} based on a parsable, passed argument.
  */
 public class PlayerParameter extends SenderIndependentParameter<Player> {
-    public PlayerParameter(final String label) {
-        super(label);
+    public PlayerParameter(final String usageLabel) {
+        super(usageLabel);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.github.commandant.command.enhance;
+package com.github.commandant.command.enhancement.model;
 
 import com.github.commandant.command.Command;
 import com.github.commandant.command.CommandProxy;
@@ -7,6 +7,9 @@ import org.bukkit.command.CommandSender;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ *
+ */
 public class PermissionRequirement implements CommandEnhancement {
     private final String requiredPermission;
     private final String noPermissionMessage;
@@ -31,9 +34,9 @@ public class PermissionRequirement implements CommandEnhancement {
         }
 
         @Override
-        public final void execute(final T sender, final String aliasLabel, final String[] args) {
+        public final void execute(final T sender, final String commandLabel, final String[] args) {
             if (sender.hasPermission(requiredPermission))
-                innerCommand.execute(sender, aliasLabel, args);
+                innerCommand.execute(sender, commandLabel, args);
             else if (noPermissionMessage != null && !noPermissionMessage.isEmpty())
                 sender.sendMessage(noPermissionMessage.replace("%permission", requiredPermission));
         }

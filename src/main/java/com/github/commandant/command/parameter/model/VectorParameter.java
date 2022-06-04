@@ -4,7 +4,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.util.Vector;
 
 /**
- *
+ * Creates a {@link Vector} based on parsable, passed arguments.
  */
 public class VectorParameter extends NumericParameter<CommandSender, Vector> {
     public VectorParameter(final String xLabel, final String yLabel, final String zLabel) {

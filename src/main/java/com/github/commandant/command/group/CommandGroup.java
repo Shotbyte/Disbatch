@@ -9,9 +9,11 @@ import org.bukkit.command.CommandSender;
 import java.util.*;
 
 /**
- * @param <T>
+ * Introduces the concept of executing various commands belonging to a root command.
+ *
+ * @param <T> {@inheritDoc}
  */
-public abstract class CommandGroup<T extends CommandSender> extends ParameterizedCommand<T, GroupedCommandExecutor<T>> {
+public abstract class CommandGroup<T extends CommandSender> extends ParameterizedCommand<T, LinkedCommandExecutor<T>> {
     private final GroupedCommandParameter<T> parameter;
 
     protected CommandGroup(final String subcommandLabel, final ParameterUsage usage) {
@@ -28,16 +30,18 @@ public abstract class CommandGroup<T extends CommandSender> extends Parameterize
     }
 
     /**
-     * @param command
+     * Adds a command to be linked to this one.
+     *
+     * @param command the command to be linked
      */
     @SuppressWarnings("unchecked")
     protected final void addCommand(final Command<? extends T> command) {
-        parameter.commands.put(command.getLabel(), new GroupedCommand<>((Command<T>) command));
+        parameter.commands.put(command.getLabel(), new LinkedCommand<>((Command<T>) command));
     }
 
     @Override
-    protected final void execute(final T sender, final String aliasLabel, final GroupedCommandExecutor<T> command) {
-        command.execute(sender, aliasLabel);
+    protected final void execute(final T sender, final String commandLabel, final LinkedCommandExecutor<T> command) {
+        command.execute(sender, commandLabel);
     }
 
     @Override
@@ -56,8 +60,8 @@ public abstract class CommandGroup<T extends CommandSender> extends Parameterize
         return super.tabComplete(sender, argument);
     }
 
-    private static class GroupedCommandParameter<T extends CommandSender> extends SenderIndependentParameter<GroupedCommandExecutor<T>> {
-        private final Map<String, GroupedCommand<T>> commands = new HashMap<>();
+    private static class GroupedCommandParameter<T extends CommandSender> extends SenderIndependentParameter<LinkedCommandExecutor<T>> {
+        private final Map<String, LinkedCommand<T>> commands = new HashMap<>();
 
         private GroupedCommandParameter(final String label) {
             super(label);
@@ -69,13 +73,13 @@ public abstract class CommandGroup<T extends CommandSender> extends Parameterize
         }
 
         @Override
-        public int getSize() {
+        public int getUsageSpan() {
             return Integer.MAX_VALUE;
         }
 
         @Override
-        protected GroupedCommandExecutor<T> parse(final String[] args) {
-            return new GroupedCommandExecutor<>(commands.get(args[0]), Arrays.copyOfRange(args, 1, args.length));
+        protected LinkedCommandExecutor<T> parse(final String[] args) {
+            return new LinkedCommandExecutor<>(commands.get(args[0]), Arrays.copyOfRange(args, 1, args.length));
         }
     }
 }

@@ -3,14 +3,17 @@ package com.github.commandant.command.parameter.model;
 import org.bukkit.command.CommandSender;
 
 /**
- * @param <K>
- * @param <V>
+ * Holds the functionalities necessary to create or retrieve an {@link Object} relating to numeric use-cases based on
+ * parsable, passed arguments.
+ *
+ * @param <K> {@inheritDoc}
+ * @param <V> {@inheritDoc}
  */
 public abstract class NumericParameter<K extends CommandSender, V> extends AbstractParameter<K, V> {
     private static final String NUMBER_REGEX = "\"\\\\d+\\\\.\\\\d+\"";
 
-    protected NumericParameter(final String... labels) {
-        super(labels);
+    protected NumericParameter(final String... usageLabels) {
+        super(usageLabels);
     }
 
     @Override

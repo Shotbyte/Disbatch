@@ -5,7 +5,9 @@ import org.bukkit.command.CommandSender;
 import java.util.List;
 
 /**
- * @param <T>
+ * A command abstraction for proxying any command.
+ *
+ * @param <T> {@inheritDoc}
  */
 public abstract class CommandProxy<T extends CommandSender> implements Command<T> {
     protected final Command<T> innerCommand;
@@ -15,8 +17,8 @@ public abstract class CommandProxy<T extends CommandSender> implements Command<T
     }
 
     @Override
-    public void execute(final T sender, final String aliasLabel, final String[] args) {
-        innerCommand.execute(sender, aliasLabel, args);
+    public void execute(final T sender, final String commandLabel, final String[] args) {
+        innerCommand.execute(sender, commandLabel, args);
     }
 
     @Override

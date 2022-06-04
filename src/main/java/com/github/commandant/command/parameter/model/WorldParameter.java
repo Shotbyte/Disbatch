@@ -4,11 +4,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 
 /**
- *
+ * Retrieves a {@link World} based on a parsable, passed argument.
  */
 public class WorldParameter extends SenderIndependentParameter<World> {
-    public WorldParameter(final String label) {
-        super(label);
+    public WorldParameter(final String usageLabel) {
+        super(usageLabel);
     }
 
     @Override

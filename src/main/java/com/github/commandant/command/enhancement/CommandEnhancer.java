@@ -1,10 +1,14 @@
-package com.github.commandant.command.enhance;
+package com.github.commandant.command.enhancement;
 
 import com.github.commandant.command.Command;
+import com.github.commandant.command.enhancement.model.CommandEnhancement;
 
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * @see com.github.commandant.command.enhancement.model
+ */
 public final class CommandEnhancer {
     private final List<CommandEnhancement> enhancements = new LinkedList<>();
 

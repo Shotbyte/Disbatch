@@ -1,4 +1,4 @@
-package com.github.commandant.command.enhance;
+package com.github.commandant.command.enhancement.model;
 
 import com.github.commandant.command.Command;
 import org.bukkit.command.CommandSender;

@@ -14,7 +14,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.lang.reflect.Field;
 
 /**
- * A namespace for registering a {@link Command}.
+ * A namespace for anything related to registering a {@link Command}.
  */
 @UtilityClass
 public class Commandant {
