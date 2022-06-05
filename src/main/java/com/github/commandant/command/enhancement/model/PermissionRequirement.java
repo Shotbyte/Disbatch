@@ -1,7 +1,7 @@
 package com.github.commandant.command.enhancement.model;
 
 import com.github.commandant.command.Command;
-import com.github.commandant.command.CommandProxy;
+import com.github.commandant.command.proxy.CommandProxy;
 import org.bukkit.command.CommandSender;
 
 import java.util.Collections;

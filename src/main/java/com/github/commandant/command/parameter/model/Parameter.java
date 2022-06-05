@@ -1,5 +1,6 @@
 package com.github.commandant.command.parameter.model;
 
+import com.github.commandant.command.parameter.ParameterUsage;
 import com.github.commandant.command.parameter.ParameterizedCommand;
 import org.bukkit.command.CommandSender;
 
@@ -33,22 +34,23 @@ public interface Parameter<K extends CommandSender, V> {
     V parse(String[] args, K sender);
 
     /**
-     * Retrieves the labels that a {@link ParameterizedCommand} should use to display a usage message to any relative
-     * {@link CommandSender} who passes flawed arguments.
-     *
-     * @return the correct usage labels
-     * @apiNote The relative {@link ParameterizedCommand} will deem any argument input as invalid if the retrieved usage
-     * labels' {@code length} is greater than the {@code length} of the input.
+     * @param commandLabel
+     * @param usage
+     * @return
      */
-    String[] getUsageLabels();
+    String createUsageMessage(final String commandLabel, ParameterUsage usage);
 
     /**
-     * Retrieves the max extent of arguments a {@link ParameterizedCommand} can pass to the parameter, separated via
-     * single whitespace.
+     * Retrieves the minimum amount of arguments a {@link ParameterizedCommand} can pass.
      *
-     * @return the argument usage span
-     * @apiNote If the usage span is less than the {@code length} of {@link Parameter#getUsageLabels()}, the relative
-     * {@link ParameterizedCommand} will immediately deem the argument input as invalid.
+     * @return the minimum argument amount
      */
-    int getUsageSpan();
+    int getMinimumUsage();
+
+    /**
+     * Retrieves the maximum amount of arguments a {@link ParameterizedCommand} can pass.
+     *
+     * @return the maximum argument amount
+     */
+    int getMaximumUsage();
 }

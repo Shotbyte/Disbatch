@@ -3,10 +3,10 @@ package com.github.commandant.command.group;
 import org.bukkit.command.CommandSender;
 
 class LinkedCommandExecutor<T extends CommandSender> {
-    private final LinkedCommand<T> command;
+    private final LinkedCommand command;
     private final String[] args;
 
-    LinkedCommandExecutor(final LinkedCommand<T> command, final String[] args) {
+    LinkedCommandExecutor(final LinkedCommand command, final String[] args) {
         this.command = command;
         this.args = args;
     }

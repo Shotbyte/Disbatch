@@ -2,9 +2,8 @@ package com.github.commandant;
 
 import com.github.commandant.command.Command;
 import com.github.commandant.command.CommandDescriptor;
-import com.google.common.base.Strings;
+import com.github.commandant.command.proxy.TypedCommandProxy;
 import lombok.experimental.UtilityClass;
-import net.jodah.typetools.TypeResolver;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
@@ -23,22 +22,16 @@ public class Commandant {
      * @param command
      * @param plugin
      */
-    @SuppressWarnings("unchecked")
     public void register(final Command<?> command, final JavaPlugin plugin) {
         final PluginCommand pluginCommand = plugin.getCommand(command.getLabel());
-        final Command<CommandSender> castedCommand = (Command<CommandSender>) command;
-        final Class<?> senderType = TypeResolver.resolveRawArgument(Command.class, castedCommand.getClass());
+        final Command<CommandSender> proxy = new TypedCommandProxy(command);
 
         pluginCommand.setExecutor((sender, serverCommand, aliasLabel, args) -> {
-            if (senderType.isInstance(sender))
-                castedCommand.execute(sender, aliasLabel, args);
-            else if (!Strings.isNullOrEmpty(castedCommand.getValidSenderMessage()))
-                sender.sendMessage(castedCommand.getValidSenderMessage());
-
+            proxy.execute(sender, aliasLabel, args);
             return true;
         });
 
-        pluginCommand.setTabCompleter((sender, serverCommand, alias, args) -> castedCommand.tabComplete(sender, args));
+        pluginCommand.setTabCompleter((sender, serverCommand, alias, args) -> proxy.tabComplete(sender, args));
     }
 
     /**

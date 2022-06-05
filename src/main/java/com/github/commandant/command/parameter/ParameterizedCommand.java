@@ -9,11 +9,13 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Introduces the concept of transforming a specific set of arguments of a compatible length into a usable
- * {@link Object} with very minimal heavy-lifting during execution.
+ * Introduces the concept of effortlessly transforming a specific set of arguments of a compatible length into a usable
+ * {@link Object} during execution.
  *
  * @param <K> {@inheritDoc}
  * @param <V> the type of the resulting {@link Object} parsed from a set of arguments
+ * @see ParameterizedCommand#execute(CommandSender, String, Object)
+ * @see ParameterizedCommand#tabComplete(CommandSender, String)
  * @see Parameter
  * @see ParameterUsage
  */
@@ -22,25 +24,51 @@ public abstract class ParameterizedCommand<K extends CommandSender, V> implement
     private final ParameterUsage usage;
     private final String invalidArgumentsMessage;
 
+    /**
+     * Constructs a new {@link ParameterizedCommand} without an invalid arguments message.
+     *
+     * @param parameter the parameter to use for {@link Object} argument creation
+     * @param usage     the usage to use for creating usage messages when necessary
+     * @throws ParameterBoundsException if any bounds of the passed parameter cannot be used
+     */
     protected ParameterizedCommand(final Parameter<? super K, V> parameter, final ParameterUsage usage) {
         this(parameter, usage, null);
     }
 
+    /**
+     * Constructs a new {@link ParameterizedCommand}.
+     *
+     * @param parameter               the parameter to use for {@link Object} argument creation
+     * @param usage                   the usage to use for creating usage messages when necessary
+     * @param invalidArgumentsMessage the message that should be sent to the {@link CommandSender} for passing invalid
+     *                                arguments (the normal usage message will be sent instead if null or empty)
+     * @throws ParameterBoundsException if any bounds of the passed parameter cannot be used
+     */
     protected ParameterizedCommand(final Parameter<? super K, V> parameter, final ParameterUsage usage, final String invalidArgumentsMessage) {
+        validateBounds(parameter);
+
         this.parameter = parameter;
         this.usage = usage;
         this.invalidArgumentsMessage = invalidArgumentsMessage;
     }
 
+    private void validateBounds(final Parameter<?, ?> parameter) {
+        final int minUsage = parameter.getMinimumUsage();
+        final int maxUsage = parameter.getMaximumUsage();
+
+        if (minUsage <= 0) throw new ParameterBoundsException("Minimum usage must be greater than 0");
+        if (maxUsage <= 0) throw new ParameterBoundsException("Maximum usage must be greater than 0");
+        if (minUsage > maxUsage) throw new ParameterBoundsException("Minimum usage cannot exceed maximum usage");
+    }
+
     @Override
     public final void execute(final K sender, final String commandLabel, final String[] args) {
-        final String[] labels = parameter.getUsageLabels();
-        final boolean isCompatibleLength = args.length >= labels.length && args.length <= parameter.getUsageSpan();
+        final boolean isCompatibleLength = args.length >= parameter.getMinimumUsage() && args.length <= parameter.getMaximumUsage();
 
         if (isCompatibleLength && parameter.canParse(args))
             execute(sender, commandLabel, parameter.parse(args, sender));
         else if (!isCompatibleLength || Strings.isNullOrEmpty(invalidArgumentsMessage))
-            sender.sendMessage(usage.toMessage(commandLabel, labels));
+            sender.sendMessage(parameter.createUsageMessage(commandLabel, usage));
         else
             sender.sendMessage(invalidArgumentsMessage);
     }
@@ -57,7 +85,7 @@ public abstract class ParameterizedCommand<K extends CommandSender, V> implement
 
     @Override
     public List<String> tabComplete(final K sender, final String[] args) {
-        return args.length <= parameter.getUsageSpan()
+        return args.length <= parameter.getMaximumUsage()
                 ? tabComplete(sender, args[args.length - 1])
                 : Collections.emptyList();
     }

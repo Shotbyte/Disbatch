@@ -34,9 +34,8 @@ public abstract class CommandGroup<T extends CommandSender> extends Parameterize
      *
      * @param command the command to be linked
      */
-    @SuppressWarnings("unchecked")
     protected final void addCommand(final Command<? extends T> command) {
-        parameter.commands.put(command.getLabel(), new LinkedCommand<>((Command<T>) command));
+        parameter.commands.put(command.getLabel(), new LinkedCommand(command));
     }
 
     @Override
@@ -61,7 +60,7 @@ public abstract class CommandGroup<T extends CommandSender> extends Parameterize
     }
 
     private static class GroupedCommandParameter<T extends CommandSender> extends SenderIndependentParameter<LinkedCommandExecutor<T>> {
-        private final Map<String, LinkedCommand<T>> commands = new HashMap<>();
+        private final Map<String, LinkedCommand> commands = new HashMap<>();
 
         private GroupedCommandParameter(final String label) {
             super(label);
@@ -73,7 +72,7 @@ public abstract class CommandGroup<T extends CommandSender> extends Parameterize
         }
 
         @Override
-        public int getUsageSpan() {
+        public int getMaximumUsage() {
             return Integer.MAX_VALUE;
         }
 

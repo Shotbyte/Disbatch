@@ -9,15 +9,15 @@ import org.bukkit.command.CommandSender;
  * @param <K> {@inheritDoc}
  * @param <V> {@inheritDoc}
  */
-public abstract class NumericParameter<K extends CommandSender, V> extends AbstractParameter<K, V> {
+public abstract class NumericalParameter<K extends CommandSender, V> extends AbstractParameter<K, V> {
     private static final String NUMBER_REGEX = "\"\\\\d+\\\\.\\\\d+\"";
 
-    protected NumericParameter(final String... usageLabels) {
+    protected NumericalParameter(final String... usageLabels) {
         super(usageLabels);
     }
 
     @Override
-    public final boolean canParse(final String[] args) {
+    public boolean canParse(final String[] args) {
         for (final String arg : args)
             if (!arg.matches(NUMBER_REGEX)) return false;
 

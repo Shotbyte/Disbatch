@@ -5,15 +5,15 @@ package com.github.commandant.command.parameter.model;
  * span by default.
  */
 public class StringParameter extends SenderIndependentParameter<String> {
-    private final int usageSpan;
+    private final int maxUsage;
 
     public StringParameter(final String usageLabel) {
         this(usageLabel, Integer.MAX_VALUE);
     }
 
-    public StringParameter(final String usageLabel, final int usageSpan) {
+    public StringParameter(final String usageLabel, final int maxUsage) {
         super(usageLabel);
-        this.usageSpan = usageSpan;
+        this.maxUsage = maxUsage;
     }
 
     @Override
@@ -30,7 +30,7 @@ public class StringParameter extends SenderIndependentParameter<String> {
     }
 
     @Override
-    public int getUsageSpan() {
-        return usageSpan;
+    public int getMaximumUsage() {
+        return maxUsage;
     }
 }

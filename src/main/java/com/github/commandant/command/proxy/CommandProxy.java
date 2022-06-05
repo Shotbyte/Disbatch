@@ -1,5 +1,6 @@
-package com.github.commandant.command;
+package com.github.commandant.command.proxy;
 
+import com.github.commandant.command.Command;
 import org.bukkit.command.CommandSender;
 
 import java.util.List;
