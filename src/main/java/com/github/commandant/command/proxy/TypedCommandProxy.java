@@ -7,6 +7,8 @@ import org.bukkit.command.CommandSender;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.Collections;
+import java.util.List;
 
 public class TypedCommandProxy extends CommandProxy<CommandSender> {
     private final Class<?> senderType;
@@ -37,5 +39,12 @@ public class TypedCommandProxy extends CommandProxy<CommandSender> {
             innerCommand.execute(sender, commandLabel, args);
         else if (!Strings.isNullOrEmpty(getValidSenderMessage()))
             sender.sendMessage(getValidSenderMessage());
+    }
+
+    @Override
+    public List<String> tabComplete(final CommandSender sender, final String[] args) {
+        return senderType.isAssignableFrom(sender.getClass())
+                ? super.tabComplete(sender, args)
+                : Collections.emptyList();
     }
 }
