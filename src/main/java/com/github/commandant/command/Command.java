@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Represents an executable command within a Minecraft server, which acts based on various user inputs.
  *
- * @param <T> any type extending {@link CommandSender} that is allowed to executeNoArgs the command
+ * @param <T> any type extending {@link CommandSender} that is allowed to execute the command
  * @apiNote Not to be confused with {@link org.bukkit.command.Command}.
  */
 public interface Command<T extends CommandSender> {
@@ -35,7 +35,7 @@ public interface Command<T extends CommandSender> {
     }
 
     /**
-     * Retrieves the message to be sent to any {@link CommandSender} that is not allowed to executeNoArgs the command.
+     * Retrieves the message to be sent to any {@link CommandSender} that is not allowed to execute the command.
      *
      * @return the valid sender message
      */
