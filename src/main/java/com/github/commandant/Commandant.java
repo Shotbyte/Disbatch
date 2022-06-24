@@ -9,6 +9,7 @@ import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
 
@@ -17,12 +18,13 @@ import java.lang.reflect.Field;
  */
 @UtilityClass
 public class Commandant {
+    private final CommandMap SERVER_COMMAND_MAP = getServerCommandMap();
 
     /**
      * @param command
      * @param plugin
      */
-    public void register(final Command<?> command, final JavaPlugin plugin) {
+    public void register(@NotNull final Command<?> command, @NotNull final JavaPlugin plugin) {
         final PluginCommand pluginCommand = plugin.getCommand(command.getLabel());
         final Command<CommandSender> proxy = new TypedCommandProxy(command);
 
@@ -36,24 +38,20 @@ public class Commandant {
 
     /**
      * @param command
-     * @param map
      */
-    public void register(final Command<?> command, final CommandMap map) {
-        register(new CommandAdapter(command), map);
+    public void register(@NotNull final Command<?> command) {
+        register(new CommandAdapter(command));
     }
 
-    public void register(final Command<?> command, final CommandDescriptor descriptor, final CommandMap map) {
-        register(new IdentifiableCommandAdapter(command, descriptor), map);
+    public void register(@NotNull final Command<?> command, @NotNull final CommandDescriptor descriptor) {
+        register(new IdentifiableCommandAdapter(command, descriptor));
     }
 
-    private void register(final CommandAdapter adapter, final CommandMap map) {
-        map.register(adapter.getLabel(), adapter);
+    private void register(final CommandAdapter adapter) {
+        SERVER_COMMAND_MAP.register(adapter.getLabel(), adapter);
     }
 
-    /**
-     * @return
-     */
-    public CommandMap getServerCommandMap() {
+    private CommandMap getServerCommandMap() {
         try {
             final Field field = Bukkit.getPluginManager().getClass().getDeclaredField("commandMap");
             field.setAccessible(true);

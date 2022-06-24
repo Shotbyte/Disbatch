@@ -2,11 +2,11 @@ package com.github.commandant.command.group;
 
 import org.bukkit.command.CommandSender;
 
-class LinkedCommandExecutor<T extends CommandSender> {
-    private final LinkedCommand command;
+class GroupedCommandExecutor<T extends CommandSender> {
+    private final GroupedCommand command;
     private final String[] args;
 
-    LinkedCommandExecutor(final LinkedCommand command, final String[] args) {
+    GroupedCommandExecutor(final GroupedCommand command, final String[] args) {
         this.command = command;
         this.args = args;
     }

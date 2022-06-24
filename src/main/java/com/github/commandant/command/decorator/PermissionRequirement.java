@@ -24,7 +24,7 @@ public final class PermissionRequirement<T extends CommandSender> extends Comman
     @Override
     public void execute(final T sender, final String commandLabel, final String[] args) {
         if (sender.hasPermission(requiredPermission))
-            innerCommand.execute(sender, commandLabel, args);
+            super.execute(sender, commandLabel, args);
         else if (noPermissionMessage != null && !noPermissionMessage.isEmpty())
             sender.sendMessage(noPermissionMessage.replace("%permission", requiredPermission));
     }
@@ -32,7 +32,7 @@ public final class PermissionRequirement<T extends CommandSender> extends Comman
     @Override
     public List<String> tabComplete(final T sender, final String[] args) {
         return sender.hasPermission(requiredPermission)
-                ? innerCommand.tabComplete(sender, args)
+                ? super.tabComplete(sender, args)
                 : Collections.emptyList();
     }
 }

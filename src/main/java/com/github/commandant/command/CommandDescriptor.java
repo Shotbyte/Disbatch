@@ -4,6 +4,9 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ *
+ */
 public final class CommandDescriptor {
     private final List<String> aliases = new LinkedList<>();
     private final String description;

@@ -1,11 +1,12 @@
 package com.github.commandant.command.parameter;
 
 import com.github.commandant.command.Command;
+import com.github.commandant.command.builder.TabCompletions;
 import com.github.commandant.command.parameter.model.Parameter;
-import com.google.common.base.Strings;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -14,63 +15,62 @@ import java.util.List;
  *
  * @param <K> {@inheritDoc}
  * @param <V> the type of the resulting {@link Object} parsed from a set of arguments
- * @see ParameterizedCommand#execute(CommandSender, String, Object)
- * @see ParameterizedCommand#tabComplete(CommandSender, String)
+ * @see #execute(CommandSender, String, Object)
+ * @see #onInvalidInput(CommandSender, String)
  * @see Parameter
  * @see ParameterUsage
  */
 public abstract class ParameterizedCommand<K extends CommandSender, V> implements Command<K> {
     private final Parameter<? super K, V> parameter;
     private final ParameterUsage usage;
-    private final String invalidArgumentsMessage;
-
-    /**
-     * Constructs a new {@link ParameterizedCommand} without an invalid arguments message.
-     *
-     * @param parameter the parameter to use for {@link Object} argument creation
-     * @param usage     the usage to use for creating usage messages when necessary
-     * @throws ParameterBoundsException if any bounds of the passed parameter cannot be used
-     */
-    protected ParameterizedCommand(final Parameter<? super K, V> parameter, final ParameterUsage usage) {
-        this(parameter, usage, null);
-    }
 
     /**
      * Constructs a new {@link ParameterizedCommand}.
      *
-     * @param parameter               the parameter to use for {@link Object} argument creation
-     * @param usage                   the usage to use for creating usage messages when necessary
-     * @param invalidArgumentsMessage the message that should be sent to the {@link CommandSender} for passing invalid
-     *                                arguments (the normal usage message will be sent instead if null or empty)
-     * @throws ParameterBoundsException if any bounds of the passed parameter cannot be used
+     * @param parameter the parameter to use for {@link Object} argument creation
+     * @param usage     the usage to use for creating usage messages when necessary
+     *                  arguments (the normal usage message will be sent instead if null or empty)
+     * @throws ParameterOutOfBoundsException if the passed parameter's minimum or maximum usages return {@code 0} or
+     *                                       exceed one another
      */
-    protected ParameterizedCommand(final Parameter<? super K, V> parameter, final ParameterUsage usage, final String invalidArgumentsMessage) {
-        validateBounds(parameter);
+    protected ParameterizedCommand(@NotNull final Parameter<? super K, V> parameter, @NotNull final ParameterUsage usage) {
+        validateCorrectBounds(parameter);
 
         this.parameter = parameter;
         this.usage = usage;
-        this.invalidArgumentsMessage = invalidArgumentsMessage;
     }
 
-    private void validateBounds(final Parameter<?, ?> parameter) {
+    private void validateCorrectBounds(final Parameter<?, ?> parameter) {
         final int minUsage = parameter.getMinimumUsage();
         final int maxUsage = parameter.getMaximumUsage();
 
-        if (minUsage <= 0) throw new ParameterBoundsException("Minimum usage must be greater than 0");
-        if (maxUsage <= 0) throw new ParameterBoundsException("Maximum usage must be greater than 0");
-        if (minUsage > maxUsage) throw new ParameterBoundsException("Minimum usage cannot exceed maximum usage");
+        if (minUsage <= 0) throw new ParameterOutOfBoundsException("Minimum usage must be greater than 0");
+        if (maxUsage <= 0) throw new ParameterOutOfBoundsException("Maximum usage must be greater than 0");
+        if (minUsage > maxUsage) throw new ParameterOutOfBoundsException("Minimum usage cannot exceed maximum usage");
     }
 
     @Override
     public final void execute(final K sender, final String commandLabel, final String[] args) {
-        final boolean isCompatibleLength = args.length >= parameter.getMinimumUsage() && args.length <= parameter.getMaximumUsage();
+        final int length = args.length;
+        final boolean isCompatibleLength = length >= parameter.getMinimumUsage() && length <= parameter.getMaximumUsage();
 
         if (isCompatibleLength && parameter.canParse(args))
             execute(sender, commandLabel, parameter.parse(args, sender));
-        else if (!isCompatibleLength || Strings.isNullOrEmpty(invalidArgumentsMessage))
-            sender.sendMessage(parameter.createUsageMessage(commandLabel, usage));
+        else if (!isCompatibleLength)
+            sender.sendMessage(usage.toMessage(commandLabel, parameter.getUsageLabels()));
         else
-            sender.sendMessage(invalidArgumentsMessage);
+            onInvalidInput(sender, commandLabel);
+    }
+
+    /**
+     * Executed for when a valid {@link CommandSender} passes invalid input. By default, this sends the sender a usage
+     * message created from the underlying {@link ParameterUsage}.
+     *
+     * @param sender       the source responsible for passing invalid input
+     * @param commandLabel the alias of the command used
+     */
+    protected void onInvalidInput(final K sender, final String commandLabel) {
+        sender.sendMessage(usage.toMessage(commandLabel, parameter.getUsageLabels()));
     }
 
     /**
@@ -84,21 +84,9 @@ public abstract class ParameterizedCommand<K extends CommandSender, V> implement
     protected abstract void execute(final K sender, final String commandLabel, final V argument);
 
     @Override
-    public List<String> tabComplete(final K sender, final String[] args) {
+    public final List<String> tabComplete(final K sender, final String[] args) {
         return args.length <= parameter.getMaximumUsage()
-                ? tabComplete(sender, args[args.length - 1])
-                : Collections.emptyList();
-    }
-
-    /**
-     * Serves the same functionality as {@link Command#tabComplete(CommandSender, String[])} but with a single
-     * {@link String} argument instead of a {@link String} array.
-     *
-     * @param sender   the source responsible for initiating a tab completion
-     * @param argument the {@link String} argument at the end of the input within the current parameter's usage span
-     * @return a list of tab-completions for the specified arguments, which may be empty or immutable
-     */
-    protected List<String> tabComplete(final K sender, final String argument) {
-        return Collections.emptyList();
+                ? new LinkedList<>(parameter.getSuggestions(sender, args))
+                : TabCompletions.emptyList();
     }
 }

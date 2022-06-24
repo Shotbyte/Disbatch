@@ -1,18 +1,21 @@
 package com.github.commandant.command.parameter.model;
 
+import com.github.commandant.command.parameter.builder.Suggesters;
 import org.bukkit.command.CommandSender;
 import org.bukkit.util.Vector;
 
 /**
  * Creates a {@link Vector} based on parsable, passed arguments.
+ *
+ * @param <T> {@inheritDoc}
  */
-public class VectorParameter extends NumericalParameter<CommandSender, Vector> {
+public final class VectorParameter<T extends CommandSender> extends NumericalParameter<T, Vector> {
     public VectorParameter(final String xLabel, final String yLabel, final String zLabel) {
-        super(xLabel, yLabel, zLabel);
+        super(Suggesters.emptySuggester(), xLabel, yLabel, zLabel);
     }
 
     @Override
-    public Vector parse(final String[] args, final CommandSender sender) {
-        return new Vector(parseNumber(args[0]), parseNumber(args[1]), parseNumber(args[2]));
+    public Vector parse(final String[] boundedArgs, final T sender) {
+        return new Vector(parseNumber(boundedArgs[0]), parseNumber(boundedArgs[1]), parseNumber(boundedArgs[2]));
     }
 }

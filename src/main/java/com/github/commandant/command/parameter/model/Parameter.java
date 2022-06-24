@@ -1,8 +1,12 @@
 package com.github.commandant.command.parameter.model;
 
+import com.github.commandant.command.builder.TabCompletions;
 import com.github.commandant.command.parameter.ParameterUsage;
 import com.github.commandant.command.parameter.ParameterizedCommand;
+import com.github.commandant.command.parameter.builder.ParameterBuilder;
 import org.bukkit.command.CommandSender;
+
+import java.util.Collection;
 
 /**
  * Allows the creation or retrieval of any {@link Object} to be used in the execution phase of a
@@ -11,8 +15,8 @@ import org.bukkit.command.CommandSender;
  *
  * @param <K> any type extending {@link CommandSender} required to parse arguments
  * @param <V> the type of the resulting {@link Object} parsed from arguments
+ * @see ParameterBuilder
  * @see AbstractParameter
- * @see SenderIndependentParameter
  */
 public interface Parameter<K extends CommandSender, V> {
 
@@ -27,21 +31,33 @@ public interface Parameter<K extends CommandSender, V> {
     /**
      * Parses the given {@link String} array into an {@link Object} matching type parameter {@link V}.
      *
-     * @param args   the arguments passed from a {@link ParameterizedCommand}
-     * @param sender the {@link CommandSender} required to parse the arguments
+     * @param boundedArgs the arguments passed from a {@link ParameterizedCommand}
+     * @param sender      the {@link CommandSender} required to parse the arguments
      * @return the parsed result
      */
-    V parse(String[] args, K sender);
+    V parse(String[] boundedArgs, K sender);
 
     /**
-     * @param commandLabel
-     * @param usage
-     * @return
+     * Retrieves the usage labels associated with the parameter, primarily used by {@link ParameterUsage} for constructing
+     * usage messages to help allowable {@link CommandSender}s pass valid arguments.
+     *
+     * @return the usage labels for the parameter
      */
-    String createUsageMessage(final String commandLabel, ParameterUsage usage);
+    Collection<String> getUsageLabels();
 
     /**
-     * Retrieves the minimum amount of arguments a {@link ParameterizedCommand} can pass.
+     * Retrieves all the possible suggestions to be used for the tab completion of a {@link ParameterizedCommand}.
+     *
+     * @param sender      the source responsible for initiating a tab completion
+     * @param boundedArgs the arguments passed from a {@link ParameterizedCommand} during tab completion
+     * @return all possible suggestions for the parameter
+     */
+    default Collection<String> getSuggestions(final K sender, final String[] boundedArgs) {
+        return TabCompletions.emptyList();
+    }
+
+    /**
+     * Retrieves the minimum amount of arguments a {@link ParameterizedCommand} must pass.
      *
      * @return the minimum argument amount
      */

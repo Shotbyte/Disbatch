@@ -1,10 +1,12 @@
 package com.github.commandant.command.parameter;
 
+import java.util.Collection;
+
 /**
  * Encapsulates various {@link String} and {@code char} components to create a usage message for any
  * {@link ParameterizedCommand}.
  */
-public class ParameterUsage {
+public final class ParameterUsage {
     private final String baseMessage;
     private final char labelHead;
     private final char labelTail;
@@ -21,7 +23,7 @@ public class ParameterUsage {
         this.labelTail = labelTail;
     }
 
-    public final String toMessage(final String commandLabel, final String... usageLabels) {
+    public String toMessage(final String commandLabel, final Collection<String> usageLabels) {
         final StringBuilder builder = new StringBuilder("/").append(commandLabel);
 
         for (final String label : usageLabels)

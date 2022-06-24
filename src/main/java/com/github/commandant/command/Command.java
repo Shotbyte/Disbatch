@@ -1,9 +1,10 @@
 package com.github.commandant.command;
 
+import com.github.commandant.command.builder.CommandBuilder;
+import com.github.commandant.command.builder.TabCompletions;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.CommandSender;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -11,6 +12,7 @@ import java.util.List;
  *
  * @param <T> any type extending {@link CommandSender} that is allowed to execute the command
  * @apiNote Not to be confused with {@link org.bukkit.command.Command}.
+ * @see CommandBuilder
  */
 public interface Command<T extends CommandSender> {
 
@@ -28,10 +30,10 @@ public interface Command<T extends CommandSender> {
      *
      * @param sender the source responsible for initiating a tab completion
      * @param args   all passed arguments, split via whitespace
-     * @return a list of tab-completions for the specified arguments, which may be empty or immutable
+     * @return a list of tab completions for the specified arguments, which may be empty or immutable
      */
     default List<String> tabComplete(final T sender, final String[] args) {
-        return Collections.emptyList();
+        return TabCompletions.emptyList();
     }
 
     /**

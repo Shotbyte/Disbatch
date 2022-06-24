@@ -1,5 +1,6 @@
 package com.github.commandant.command.parameter.model;
 
+import com.github.commandant.command.parameter.builder.Suggester;
 import org.bukkit.command.CommandSender;
 
 /**
@@ -12,8 +13,8 @@ import org.bukkit.command.CommandSender;
 public abstract class NumericalParameter<K extends CommandSender, V> extends AbstractParameter<K, V> {
     private static final String NUMBER_REGEX = "\"\\\\d+\\\\.\\\\d+\"";
 
-    protected NumericalParameter(final String... usageLabels) {
-        super(usageLabels);
+    protected NumericalParameter(final Suggester suggester, final String... usageLabels) {
+        super(suggester, usageLabels);
     }
 
     @Override
