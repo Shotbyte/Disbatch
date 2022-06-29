@@ -6,12 +6,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.defaults.BukkitCommand;
 
 import java.util.List;
+import java.util.Objects;
 
 class CommandAdapter extends BukkitCommand {
     private final Command<CommandSender> command;
 
     CommandAdapter(final Command<?> command) {
-        super(command.getLabel());
+        super(Objects.requireNonNull(command.getLabel()));
         this.command = new TypedCommandProxy(command);
     }
 
