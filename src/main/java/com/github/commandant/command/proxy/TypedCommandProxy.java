@@ -1,13 +1,13 @@
 package com.github.commandant.command.proxy;
 
 import com.github.commandant.command.Command;
+import com.github.commandant.command.builder.TabCompletions;
 import com.google.common.base.Strings;
 import com.google.common.reflect.TypeToken;
 import org.bukkit.command.CommandSender;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.Collections;
 import java.util.List;
 import java.util.StringJoiner;
 
@@ -48,7 +48,8 @@ public class TypedCommandProxy extends CommandProxy<CommandSender> {
     public List<String> tabComplete(final CommandSender sender, final String[] args) {
         return senderType.isAssignableFrom(sender.getClass())
                 ? super.tabComplete(sender, args)
-                : Collections.emptyList();
+                : TabCompletions.emptyList();
+    }
 
     @Override
     public String toString() {
