@@ -24,7 +24,7 @@ public final class LocationFromWorldParameter<T extends CommandSender> extends N
 
     @Override
     public boolean canParse(final String[] args) {
-        return super.canParse(Arrays.copyOfRange(args, 1, args.length));
+        return !args[0].isEmpty() && super.canParse(Arrays.copyOfRange(args, 1, args.length));
     }
 
     @Override
