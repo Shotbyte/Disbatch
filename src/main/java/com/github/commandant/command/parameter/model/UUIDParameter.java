@@ -1,5 +1,6 @@
 package com.github.commandant.command.parameter.model;
 
+import com.github.commandant.command.parameter.builder.Suggester;
 import org.bukkit.command.CommandSender;
 
 import java.util.UUID;
@@ -10,6 +11,10 @@ import java.util.UUID;
 public final class UUIDParameter<T extends CommandSender> extends UUIDOrientedParameter<T, UUID> {
     public UUIDParameter(final String usageLabel) {
         super(usageLabel);
+    }
+
+    public UUIDParameter(final String usageLabel, final Suggester<T> suggester) {
+        super(usageLabel, suggester);
     }
 
     @Override

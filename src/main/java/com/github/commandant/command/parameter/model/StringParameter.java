@@ -3,28 +3,20 @@ package com.github.commandant.command.parameter.model;
 import com.github.commandant.command.parameter.builder.Suggester;
 import com.github.commandant.command.parameter.builder.Suggesters;
 import org.bukkit.command.CommandSender;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Forms a {@link String} from all passed arguments, joined via single whitespace, within a nearly-infinite usage
  * span by default.
  */
-public final class StringParameter<T extends CommandSender> extends AbstractParameter<T, String> {
+public final class StringParameter<T extends CommandSender> extends StringParsableParameter<T, String> {
     private final int minUsage;
     private final int maxUsage;
 
-    private StringParameter(final int minUsage, final int maxUsage, @NotNull final Suggester<T> suggester, @NotNull final String[] usageLabels) {
+    private StringParameter(final int minUsage, final int maxUsage, final Suggester<T> suggester, final String[] usageLabels) {
         super(suggester, usageLabels);
-        this.minUsage = minUsage;
-        this.maxUsage = maxUsage;
-    }
 
-    @Override
-    public boolean canParse(final String[] args) {
-        for (final String arg : args)
-            if (arg.isEmpty()) return false;
-
-        return true;
+        this.minUsage = minUsage == 0 ? usageLabels.length : minUsage;
+        this.maxUsage = maxUsage == 0 ? usageLabels.length : maxUsage;
     }
 
     @Override
@@ -48,8 +40,8 @@ public final class StringParameter<T extends CommandSender> extends AbstractPara
     public static final class Builder<T extends CommandSender> {
         private Suggester<T> suggester = Suggesters.emptySuggester();
         private String[] usageLabels;
-        private int minUsage = 1;
-        private int maxUsage = Integer.MAX_VALUE;
+        private int minUsage;
+        private int maxUsage;
 
         public Builder<T> usageLabels(final String... usageLabels) {
             this.usageLabels = usageLabels;

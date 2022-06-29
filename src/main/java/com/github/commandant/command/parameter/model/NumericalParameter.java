@@ -13,7 +13,11 @@ import org.bukkit.command.CommandSender;
 public abstract class NumericalParameter<K extends CommandSender, V> extends AbstractParameter<K, V> {
     private static final String NUMBER_REGEX = "\"\\\\d+\\\\.\\\\d+\"";
 
-    protected NumericalParameter(final Suggester suggester, final String... usageLabels) {
+    protected NumericalParameter(final String... usageLabels) {
+        super(usageLabels);
+    }
+
+    protected NumericalParameter(final Suggester<K> suggester, final String... usageLabels) {
         super(suggester, usageLabels);
     }
 

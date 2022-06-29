@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Introduces the concept of effortlessly transforming a specific set of arguments of a compatible length into a usable
@@ -51,12 +52,13 @@ public abstract class ParameterizedCommand<K extends CommandSender, V> implement
 
     @Override
     public final void execute(final K sender, final String commandLabel, final String[] args) {
-        final int length = args.length;
-        final boolean isCompatibleLength = length >= parameter.getMinimumUsage() && length <= parameter.getMaximumUsage();
+        final boolean isCompatibleLength = args.length >= parameter.getMinimumUsage() && args.length <= parameter.getMaximumUsage();
 
-        if (isCompatibleLength && parameter.canParse(args))
-            execute(sender, commandLabel, parameter.parse(args, sender));
-        else if (!isCompatibleLength)
+        if (isCompatibleLength && parameter.canParse(args)) {
+            final V result = Objects.requireNonNull(parameter.parse(args, sender),
+                    "Parsed result from input is null (parameter: " + parameter + ")");
+            execute(sender, commandLabel, result);
+        } else if (!isCompatibleLength)
             sender.sendMessage(usage.toMessage(commandLabel, parameter.getUsageLabels()));
         else
             onInvalidInput(sender, commandLabel);

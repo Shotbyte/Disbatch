@@ -19,10 +19,17 @@ public abstract class AbstractParameter<K extends CommandSender, V> implements P
     private final Suggester<K> suggester;
     private final Collection<String> usageLabels;
 
+    /**
+     * @param usageLabels
+     */
     protected AbstractParameter(final String... usageLabels) {
         this(Suggesters.emptySuggester(), usageLabels);
     }
 
+    /**
+     * @param suggester
+     * @param usageLabels
+     */
     protected AbstractParameter(@NotNull final Suggester<K> suggester, @NotNull final String... usageLabels) {
         this.suggester = suggester;
         this.usageLabels = Lists.newArrayList(usageLabels);
