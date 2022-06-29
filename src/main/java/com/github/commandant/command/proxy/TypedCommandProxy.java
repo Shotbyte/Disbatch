@@ -9,6 +9,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.List;
+import java.util.StringJoiner;
 
 /**
  *
@@ -48,5 +49,15 @@ public class TypedCommandProxy extends CommandProxy<CommandSender> {
         return senderType.isAssignableFrom(sender.getClass())
                 ? super.tabComplete(sender, args)
                 : Collections.emptyList();
+
+    @Override
+    public String toString() {
+        final String derivative = super.toString();
+        final String stringChar = String.valueOf(derivative.charAt(derivative.length() - 1));
+        final String delimiter = ", ";
+
+        return derivative.replace(stringChar, new StringJoiner(delimiter, delimiter, stringChar)
+                .add("senderType=" + senderType)
+                .toString());
     }
 }
