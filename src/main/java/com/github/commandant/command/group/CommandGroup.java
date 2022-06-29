@@ -6,7 +6,6 @@ import com.github.commandant.command.parameter.ParameterizedCommand;
 import com.github.commandant.command.parameter.builder.ParameterBuilder;
 import com.github.commandant.command.parameter.builder.Suggesters;
 import com.github.commandant.command.parameter.decorator.MutableParameter;
-import com.github.commandant.command.parameter.model.Parameter;
 import org.bukkit.command.CommandSender;
 
 import java.util.Arrays;
@@ -28,14 +27,12 @@ public abstract class CommandGroup<T extends CommandSender> extends Parameterize
     private CommandGroup(final MutableParameter<T, GroupedCommandExecutor<T>> parameter, final String subcommandLabel, final ParameterUsage usage) {
         super(parameter, usage);
 
-        final Parameter<T, GroupedCommandExecutor<T>> underlyingParameter = ParameterBuilder.of(this)
+        parameter.setUnderlyingParameter(ParameterBuilder.of(this)
                 .predicate(boundedArgs -> commands.containsKey(boundedArgs[0]))
                 .parser((boundedArgs, sender) -> new GroupedCommandExecutor<>(commands.get(boundedArgs[0]), copyShortened(boundedArgs)))
                 .suggester(Suggesters.forFirstArgument(Suggesters.of(commands.keySet())))
                 .usageLabels(subcommandLabel)
-                .build();
-
-        parameter.setUnderlyingParameter(underlyingParameter);
+                .build());
     }
 
     /**
