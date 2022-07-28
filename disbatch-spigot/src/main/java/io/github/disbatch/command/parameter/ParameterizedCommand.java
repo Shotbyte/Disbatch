@@ -1,16 +1,17 @@
 package io.github.disbatch.command.parameter;
 
+import com.google.common.collect.ImmutableList;
 import io.github.disbatch.command.Command;
 import io.github.disbatch.command.CommandInput;
-import io.github.disbatch.command.builder.TabCompletions;
 import io.github.disbatch.command.parameter.model.Parameter;
-import io.github.disbatch.command.parameter.usage.NormalParameterUsage;
 import io.github.disbatch.command.parameter.usage.ParameterUsage;
+import io.github.disbatch.command.parameter.usage.UnparsableInput;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Introduces the concept from effortlessly transforming a specific set from arguments from a compatible length into a usable
@@ -19,9 +20,8 @@ import java.util.List;
  * @param <K> {@inheritDoc}
  * @param <V> the type from the resulting object parsed from a set from arguments
  * @see #execute(CommandSender, CommandInput, Object)
- * @see #onInvalidInput(CommandSender, CommandInput)
  * @see Parameter
- * @see NormalParameterUsage
+ * @see ParameterUsage
  */
 public abstract class ParameterizedCommand<K extends CommandSender, V> implements Command<K> {
     private final Parameter<? super K, V> parameter;
@@ -54,30 +54,14 @@ public abstract class ParameterizedCommand<K extends CommandSender, V> implement
     @Override
     public final void execute(final K sender, final @NotNull CommandInput input) {
         final int length = input.getArgumentLength();
-        final boolean isCompatibleLength = length >= parameter.getMinimumUsage() && length <= parameter.getMaximumUsage();
 
-        if (isCompatibleLength && parameter.canParse(input)) {
-            final V result = parameter.parse(input, sender);
+        if (length >= parameter.getMinimumUsage() && length <= parameter.getMaximumUsage()) {
+            final Optional<V> result = parameter.parse(input, sender);
 
-            if (result == null)
-                throw new ParameterParseException("Parsed result from input is null (parameter: " + parameter + ")");
-
-            execute(sender, input, result);
-        } else if (!isCompatibleLength) {
-            sender.sendMessage(usage.toMessage(input, parameter.getUsageLabels()));
+            if (result.isPresent()) execute(sender, input, result.get());
+            else sender.sendMessage(usage.toMessage(new UnparsableInputImpl(input, true), parameter.getUsageLabels()));
         } else
-            onInvalidInput(sender, input);
-    }
-
-    /**
-     * Executed for when a valid {@link CommandSender} passes invalid input. By default, this sends the sender a usage
-     * message created from the underlying {@link NormalParameterUsage}.
-     *
-     * @param sender the source responsible for passing invalid input
-     * @param input  the alias from the command used
-     */
-    protected void onInvalidInput(final K sender, final CommandInput input) {
-        sender.sendMessage(usage.toMessage(input, parameter.getUsageLabels()));
+            sender.sendMessage(usage.toMessage(new UnparsableInputImpl(input, false), parameter.getUsageLabels()));
     }
 
     /**
@@ -94,6 +78,51 @@ public abstract class ParameterizedCommand<K extends CommandSender, V> implement
     public final List<String> tabComplete(final K sender, final @NotNull CommandInput input) {
         return input.getArgumentLength() <= parameter.getMaximumUsage()
                 ? new LinkedList<>(parameter.getSuggestions(sender, input))
-                : TabCompletions.emptyList();
+                : ImmutableList.of();
+    }
+
+    private static class UnparsableInputImpl implements UnparsableInput {
+        private final CommandInput cmdInput;
+        private final boolean isCompatibleLength;
+
+        private UnparsableInputImpl(final CommandInput cmdInput, final boolean isCompatibleLength) {
+            this.cmdInput = cmdInput;
+            this.isCompatibleLength = isCompatibleLength;
+        }
+
+        @Override
+        public int getArgumentLength() {
+            return cmdInput.getArgumentLength();
+        }
+
+        @Override
+        public String getArgumentLine() {
+            return cmdInput.getArgumentLine();
+        }
+
+        @Override
+        public String getArgument(final int index) {
+            return cmdInput.getArgument(index);
+        }
+
+        @Override
+        public String[] getArguments() {
+            return cmdInput.getArguments();
+        }
+
+        @Override
+        public String getCommandLabel() {
+            return cmdInput.getCommandLabel();
+        }
+
+        @Override
+        public String getCommandLine() {
+            return cmdInput.getCommandLine();
+        }
+
+        @Override
+        public boolean isCompatibleLength() {
+            return isCompatibleLength;
+        }
     }
 }

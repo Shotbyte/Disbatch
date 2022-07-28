@@ -1,6 +1,8 @@
 package io.github.disbatch;
 
 import io.github.disbatch.command.CommandDescriptor;
+import io.github.disbatch.command.CommandException;
+import io.github.disbatch.command.CommandExecutionException;
 import io.github.disbatch.command.proxy.TypedCommandProxy;
 import org.bukkit.Server;
 import org.bukkit.command.CommandMap;
@@ -19,7 +21,7 @@ class LegacyCommandRegistrar implements CommandRegistrar {
         try {
             final PluginManager pluginManager = server.getPluginManager();
             final Optional<Field> fieldOptional = Arrays.stream(pluginManager.getClass().getDeclaredFields())
-                    .filter(field -> field.getType().isAssignableFrom(CommandMap.class))
+                    .filter(field -> CommandMap.class.isAssignableFrom(field.getType()))
                     .findFirst();
 
             if (fieldOptional.isPresent()) {
@@ -27,9 +29,9 @@ class LegacyCommandRegistrar implements CommandRegistrar {
                 field.setAccessible(true);
                 serverCommandMap = (CommandMap) field.get(pluginManager);
             } else
-                throw new IllegalStateException("Server instance does not have a CommandMap");
+                throw new CommandException("Server instance does not have a CommandMap");
         } catch (final ReflectiveOperationException e) {
-            throw new IllegalStateException(e);
+            throw new CommandException(e);
         }
     }
 
@@ -52,6 +54,9 @@ class LegacyCommandRegistrar implements CommandRegistrar {
 
         @Override
         public boolean execute(final CommandSender sender, final String commandLabel, final String[] args) {
+            if (sender == null)
+                throw new CommandExecutionException("CommandSender is null");
+
             typedCommand.execute(sender, new LazyLoadingCommandInput(args, commandLabel));
             return true;
         }

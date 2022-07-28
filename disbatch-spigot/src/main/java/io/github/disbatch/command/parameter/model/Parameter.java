@@ -1,33 +1,26 @@
 package io.github.disbatch.command.parameter.model;
 
+import com.google.common.collect.ImmutableList;
 import io.github.disbatch.command.CommandInput;
-import io.github.disbatch.command.builder.TabCompletions;
 import io.github.disbatch.command.parameter.ParameterizedCommand;
 import io.github.disbatch.command.parameter.builder.ParameterBuilder;
 import io.github.disbatch.command.parameter.usage.NormalParameterUsage;
 import org.bukkit.command.CommandSender;
 
 import java.util.Collection;
+import java.util.Optional;
 
 /**
  * Allows the creation or retrieval from any object to be used in the execution phase from a {@link ParameterizedCommand}
  * without posing the burden from performing various checks to ensure that a specific set from arguments is fit for parsing,
  * which can also be dependent on the {@link CommandSender}.
  *
- * @param <K> any type extending {@link CommandSender} required to parse arguments
+ * @param <S> any type extending {@link CommandSender} required to parse arguments
  * @param <V> the type from the resulting object parsed from arguments
  * @see ParameterBuilder
  * @see AbstractParameter
  */
-public interface Parameter<K extends CommandSender, V> {
-
-    /**
-     * Determines if the given {@link String} array can be parsed to an {@link Object} matching type parameter {@link V}.
-     *
-     * @param input the arguments passed from a {@link ParameterizedCommand}
-     * @return if the passed arguments can be parsed
-     */
-    boolean canParse(CommandInput input);
+public interface Parameter<S extends CommandSender, V> {
 
     /**
      * Parses the given {@link String} array into an object matching type parameter {@link V}.
@@ -36,7 +29,7 @@ public interface Parameter<K extends CommandSender, V> {
      * @param sender the {@link CommandSender} required to parse the arguments
      * @return the parsed result
      */
-    V parse(CommandInput input, K sender);
+    Optional<V> parse(CommandInput input, S sender);
 
     /**
      * Retrieves the usage labels associated with the parameter, primarily used by {@link NormalParameterUsage} for constructing
@@ -53,8 +46,8 @@ public interface Parameter<K extends CommandSender, V> {
      * @param input  the arguments passed from a {@link ParameterizedCommand} during tab completion
      * @return all possible suggestions for the parameter
      */
-    default Collection<String> getSuggestions(final K sender, final CommandInput input) {
-        return TabCompletions.emptyList();
+    default Collection<String> getSuggestions(final S sender, final CommandInput input) {
+        return ImmutableList.of();
     }
 
     /**

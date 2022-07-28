@@ -13,26 +13,17 @@ import java.util.Collection;
  * A parameter abstraction that is not only able to cache its usage labels but also has {@link #getMinimumUsage()} and
  * {@link #getMaximumUsage()} deemed by the length from those labels by default.
  *
- * @param <K> {@inheritDoc}
+ * @param <S> {@inheritDoc}
  * @param <V> {@inheritDoc}
  */
-public abstract class AbstractParameter<K extends CommandSender, V> implements Parameter<K, V> {
-    private final Suggester<K> suggester;
+public abstract class AbstractParameter<S extends CommandSender, V> implements Parameter<S, V> {
     private final Collection<String> usageLabels;
+    private Suggester<S> suggester = Suggesters.empty();
 
     /**
      * @param usageLabels
      */
-    protected AbstractParameter(final String... usageLabels) {
-        this(Suggesters.emptySuggester(), usageLabels);
-    }
-
-    /**
-     * @param suggester
-     * @param usageLabels
-     */
-    protected AbstractParameter(final @NotNull Suggester<K> suggester, final @NotNull String... usageLabels) {
-        this.suggester = suggester;
+    protected AbstractParameter(final @NotNull String... usageLabels) {
         this.usageLabels = Lists.newArrayList(usageLabels);
     }
 
@@ -42,7 +33,7 @@ public abstract class AbstractParameter<K extends CommandSender, V> implements P
     }
 
     @Override
-    public Collection<String> getSuggestions(final K sender, final CommandInput input) {
+    public Collection<String> getSuggestions(final S sender, final CommandInput input) {
         return suggester.getSuggestions(sender, input);
     }
 
@@ -54,5 +45,17 @@ public abstract class AbstractParameter<K extends CommandSender, V> implements P
     @Override
     public int getMaximumUsage() {
         return usageLabels.size();
+    }
+
+    /**
+     * @param suggester
+     * @param <SS>
+     * @param <VV>
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public final <SS extends CommandSender, VV> Parameter<SS, VV> withSuggester(final @NotNull Suggester<SS> suggester) {
+        this.suggester = (Suggester<S>) suggester;
+        return (Parameter<SS, VV>) this;
     }
 }

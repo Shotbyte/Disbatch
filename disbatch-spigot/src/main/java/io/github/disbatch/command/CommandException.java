@@ -11,4 +11,11 @@ public class CommandException extends RuntimeException {
     public CommandException(final String message) {
         super(message);
     }
+
+    /**
+     * @param cause
+     */
+    public CommandException(final Exception cause) {
+        super(cause);
+    }
 }

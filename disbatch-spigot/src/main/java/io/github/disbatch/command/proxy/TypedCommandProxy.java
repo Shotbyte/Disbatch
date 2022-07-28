@@ -1,10 +1,10 @@
 package io.github.disbatch.command.proxy;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableList;
 import com.google.common.reflect.TypeToken;
 import io.github.disbatch.command.Command;
 import io.github.disbatch.command.CommandInput;
-import io.github.disbatch.command.builder.TabCompletions;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
@@ -53,6 +53,6 @@ public class TypedCommandProxy extends CommandProxy<CommandSender> {
     public List<String> tabComplete(final CommandSender sender, final @NotNull CommandInput input) {
         return senderType.isAssignableFrom(sender.getClass())
                 ? super.tabComplete(sender, input)
-                : TabCompletions.emptyList();
+                : ImmutableList.of();
     }
 }

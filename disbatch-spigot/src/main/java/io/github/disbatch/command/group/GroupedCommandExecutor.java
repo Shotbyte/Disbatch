@@ -1,34 +1,32 @@
 package io.github.disbatch.command.group;
 
-import io.github.disbatch.command.Command;
 import io.github.disbatch.command.CommandInput;
 import org.bukkit.command.CommandSender;
 
 import java.util.Objects;
 import java.util.StringJoiner;
 
-class GroupedCommandExecutor<T extends CommandSender> {
-    private final Command<T> command;
-    private final CommandInput previous;
+class GroupedCommandExecutor<S extends CommandSender> {
+    private final GroupedCommand<S> command;
+    private final CommandInput input;
 
-    GroupedCommandExecutor(final Command<T> command, final CommandInput previous) {
+    GroupedCommandExecutor(final GroupedCommand<S> command, final CommandInput input) {
         this.command = command;
-        this.previous = previous;
+        this.input = input;
     }
 
-    void execute(final T sender) {
-        command.execute(sender, new LazyLoadingGroupedCommandInput(previous));
+    void execute(final S sender) {
+        command.execute(sender, new LazyLoadingGroupedCommandInput(input, command.getLabel()));
     }
 
     private static class LazyLoadingGroupedCommandInput implements CommandInput {
         private final CommandInput previous;
-        private final String previousCmdLabel;
+        private final String cmdLabel;
         private String[] arguments;
-        private String[] allCmdLabels;
 
-        private LazyLoadingGroupedCommandInput(final CommandInput previous) {
+        private LazyLoadingGroupedCommandInput(final CommandInput previous, final String recentCmdLabel) {
             this.previous = previous;
-            previousCmdLabel = previous.getRelativeCommandLabel();
+            cmdLabel = previous.getCommandLabel() + " " + recentCmdLabel;
         }
 
         @Override
@@ -60,23 +58,8 @@ class GroupedCommandExecutor<T extends CommandSender> {
         }
 
         @Override
-        public String[] getAllCommandLabels() {
-            if (allCmdLabels == null) {
-                final String[] allPreviousCmdLabels = previous.getAllCommandLabels();
-                final int length = allPreviousCmdLabels.length;
-                final String[] allCmdLabels = (arguments = new String[length + 1]);
-                System.arraycopy(allPreviousCmdLabels, 1, allCmdLabels, 0, arguments.length);
-                allCmdLabels[length - 1] = previousCmdLabel;
-
-                return allCmdLabels;
-            }
-
-            return allCmdLabels;
-        }
-
-        @Override
-        public String getRelativeCommandLabel() {
-            return previousCmdLabel;
+        public String getCommandLabel() {
+            return cmdLabel;
         }
 
         @Override

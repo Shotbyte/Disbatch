@@ -7,11 +7,6 @@ import java.util.Objects;
 import java.util.StringJoiner;
 
 class EmptyCommandInput implements CommandInput {
-    static final EmptyCommandInput INSTANCE = new EmptyCommandInput();
-
-    private EmptyCommandInput() {
-    }
-
     @Override
     public int getArgumentLength() {
         return 0;
@@ -19,12 +14,12 @@ class EmptyCommandInput implements CommandInput {
 
     @Override
     public String getArgumentLine() {
-        return StringUtils.EMPTY;
+        return emptyString();
     }
 
     @Override
     public String getArgument(final int index) {
-        return StringUtils.EMPTY;
+        return emptyString();
     }
 
     @Override
@@ -33,17 +28,16 @@ class EmptyCommandInput implements CommandInput {
     }
 
     @Override
-    public String[] getAllCommandLabels() {
-        return ArrayUtils.EMPTY_STRING_ARRAY;
-    }
-
-    @Override
-    public String getRelativeCommandLabel() {
-        return StringUtils.EMPTY;
+    public String getCommandLabel() {
+        return emptyString();
     }
 
     @Override
     public String getCommandLine() {
+        return emptyString();
+    }
+
+    private String emptyString() {
         return StringUtils.EMPTY;
     }
 

@@ -1,7 +1,7 @@
 package io.github.disbatch.command.parameter.decorator;
 
+import com.google.common.collect.ImmutableList;
 import io.github.disbatch.command.CommandInput;
-import io.github.disbatch.command.builder.TabCompletions;
 import io.github.disbatch.command.parameter.ParameterException;
 import io.github.disbatch.command.parameter.ParameterParseException;
 import io.github.disbatch.command.parameter.model.Parameter;
@@ -9,32 +9,28 @@ import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
+import java.util.Optional;
 import java.util.StringJoiner;
 
 /**
- * @param <K> {@inheritDoc}
+ * @param <S> {@inheritDoc}
  * @param <V> {@inheritDoc}
  */
-public final class MutableParameter<K extends CommandSender, V> implements Parameter<K, V> {
+public final class MutableParameter<S extends CommandSender, V> implements Parameter<S, V> {
     private static final Parameter<?, ?> EMPTY_PARAMETER = new EmptyParameter();
 
     @SuppressWarnings("unchecked")
-    private Parameter<K, V> underlyingParameter = (Parameter<K, V>) EMPTY_PARAMETER;
+    private Parameter<S, V> underlyingParameter = (Parameter<S, V>) EMPTY_PARAMETER;
 
     /**
      * @param underlyingParameter
      */
-    public void setUnderlyingParameter(final @NotNull Parameter<K, V> underlyingParameter) {
+    public void setUnderlyingParameter(final @NotNull Parameter<S, V> underlyingParameter) {
         this.underlyingParameter = underlyingParameter;
     }
 
     @Override
-    public boolean canParse(final CommandInput input) {
-        return underlyingParameter.canParse(input);
-    }
-
-    @Override
-    public V parse(final CommandInput input, final K sender) {
+    public Optional<V> parse(final CommandInput input, final S sender) {
         return underlyingParameter.parse(input, sender);
     }
 
@@ -60,14 +56,9 @@ public final class MutableParameter<K extends CommandSender, V> implements Param
                 .toString();
     }
 
-    private static class EmptyParameter implements Parameter<CommandSender, Object> {
+    private static class EmptyParameter implements Parameter<CommandSender, Void> {
         @Override
-        public boolean canParse(final CommandInput input) {
-            throw newParameterException();
-        }
-
-        @Override
-        public Object parse(final CommandInput input, final CommandSender sender) {
+        public Optional<Void> parse(final CommandInput input, final CommandSender sender) {
             throw newParameterException();
         }
 
@@ -77,7 +68,7 @@ public final class MutableParameter<K extends CommandSender, V> implements Param
 
         @Override
         public Collection<String> getUsageLabels() {
-            return TabCompletions.emptyList();
+            return ImmutableList.of();
         }
 
         @Override

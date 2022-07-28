@@ -12,25 +12,28 @@ import org.bukkit.command.CommandSender;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Introduces the concept from executing various commands belonging to a root command.
  *
- * @param <T> {@inheritDoc}
+ * @param <S> {@inheritDoc}
  */
-public final class CommandGroup<T extends CommandSender> extends ParameterizedCommand<T, GroupedCommandExecutor<? super T>> {
-    private final Map<String, Command<? super T>> commands = new HashMap<>();
+public final class CommandGroup<S extends CommandSender> extends ParameterizedCommand<S, GroupedCommandExecutor<? super S>> {
+    private final Map<String, GroupedCommand<? super S>> commands = new HashMap<>();
 
     public CommandGroup(final String subcommandLabel, final ParameterUsage usage) {
         this(new MutableParameter<>(), subcommandLabel, usage);
     }
 
-    private CommandGroup(final MutableParameter<T, GroupedCommandExecutor<? super T>> parameter, final String subcommandLabel, final ParameterUsage usage) {
+    private CommandGroup(final MutableParameter<S, GroupedCommandExecutor<? super S>> parameter, final String subcommandLabel, final ParameterUsage usage) {
         super(parameter, usage);
 
         parameter.setUnderlyingParameter(ParameterBuilder.of(this)
-                .predicate(input -> commands.containsKey(input.getArgument(0)))
-                .parser((input, sender) -> new GroupedCommandExecutor<>(commands.get(input.getArgument(0)), input))
+                .parser((input, sender) -> {
+                    final GroupedCommand<? super S> groupedCommand = commands.get(input.getArgument(0));
+                    return groupedCommand == null ? Optional.empty() : Optional.of(new GroupedCommandExecutor<>(groupedCommand, input));
+                })
                 .suggester(Suggesters.forFirstArgument(Suggesters.of(commands.keySet())))
                 .usageLabels(subcommandLabel)
                 .build());
@@ -41,15 +44,15 @@ public final class CommandGroup<T extends CommandSender> extends ParameterizedCo
      *
      * @param command the command to be linked
      */
-    public void addCommand(final Command<? super T> command, final CommandDescriptor descriptor) {
-        commands.put(descriptor.getLabel(), command);
+    public void addCommand(final Command<? super S> command, final CommandDescriptor descriptor) {
+        commands.put(descriptor.getLabel(), new GroupedCommand<>(command, descriptor.getLabel()));
 
         for (final String alias : descriptor.getAliases())
-            commands.put(alias, command);
+            commands.put(alias, new GroupedCommand<>(command, alias));
     }
 
     @Override
-    protected void execute(final T sender, final CommandInput input, final GroupedCommandExecutor<? super T> executor) {
+    protected void execute(final S sender, final CommandInput input, final GroupedCommandExecutor<? super S> executor) {
         executor.execute(sender);
     }
 }

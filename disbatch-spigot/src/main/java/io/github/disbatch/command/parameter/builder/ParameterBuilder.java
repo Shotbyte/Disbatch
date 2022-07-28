@@ -8,74 +8,67 @@ import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
+import java.util.Optional;
 
 /**
- * @param <K>
+ * @param <S>
  * @param <V>
  * @see ParameterBuilder#of(ParameterizedCommand)
  */
-public final class ParameterBuilder<K extends CommandSender, V> {
-    private ParameterPredicate predicate;
-    private ParameterParser<K, V> parser;
-    private Suggester<K> suggester = Suggesters.emptySuggester();
+public final class ParameterBuilder<S extends CommandSender, V> {
+    private ParameterParser<S, V> parser;
+    private Suggester<S> suggester = Suggesters.empty();
     private String[] usageLabels;
     private int minUsage = 1;
     private int maxUsage = Integer.MAX_VALUE;
 
     /**
      * @param ignored
-     * @param <K>
+     * @param <S>
      * @param <V>
      * @return
      */
-    public static <K extends CommandSender, V> ParameterBuilder<K, V> of(final ParameterizedCommand<K, V> ignored) {
+    public static <S extends CommandSender, V> ParameterBuilder<S, V> of(final ParameterizedCommand<S, V> ignored) {
         return new ParameterBuilder<>();
     }
 
-    public ParameterBuilder<K, V> predicate(final ParameterPredicate predicate) {
-        this.predicate = predicate;
-        return this;
-    }
-
-    public ParameterBuilder<K, V> parser(final ParameterParser<K, V> parser) {
+    public ParameterBuilder<S, V> parser(final ParameterParser<S, V> parser) {
         this.parser = parser;
         return this;
     }
 
-    public ParameterBuilder<K, V> suggester(final Suggester<K> suggester) {
+    public ParameterBuilder<S, V> suggester(final Suggester<S> suggester) {
         this.suggester = suggester;
         return this;
     }
 
-    public ParameterBuilder<K, V> minimumUsage(final int minUsage) {
+    public ParameterBuilder<S, V> minimumUsage(final int minUsage) {
         this.minUsage = minUsage;
         return this;
     }
 
-    public ParameterBuilder<K, V> maximumUsage(final int maxUsage) {
+    public ParameterBuilder<S, V> maximumUsage(final int maxUsage) {
         this.maxUsage = maxUsage;
         return this;
     }
 
-    public ParameterBuilder<K, V> usageLabels(final String... usageLabels) {
+    public ParameterBuilder<S, V> usageLabels(final String... usageLabels) {
         this.usageLabels = usageLabels;
         return this;
     }
 
-    public Parameter<K, V> build() {
-        return new BuiltParameter(predicate, parser, suggester, Lists.newArrayList(usageLabels), minUsage, maxUsage);
+    public Parameter<S, V> build() {
+        return new BuiltParameter(parser, suggester, Lists.newArrayList(usageLabels), minUsage, maxUsage);
     }
 
-    private class BuiltParameter implements Parameter<K, V> {
-        private final ParameterPredicate predicate;
-        private final ParameterParser<K, V> parser;
-        private final Suggester<K> suggester;
+    private class BuiltParameter implements Parameter<S, V> {
+        private final ParameterParser<S, V> parser;
+        private final Suggester<S> suggester;
         private final Collection<String> usageLabels;
         private final int minUsage;
         private final int maxUsage;
 
-        private BuiltParameter(final @NotNull ParameterPredicate predicate, final @NotNull ParameterParser<K, V> parser, final @NotNull Suggester<K> suggester, final Collection<String> usageLabels, final int minUsage, final int maxUsage) {
-            this.predicate = predicate;
+        private BuiltParameter(final @NotNull ParameterParser<S, V> parser, final @NotNull Suggester<S> suggester, final Collection<String> usageLabels, final int minUsage, final int maxUsage) {
             this.parser = parser;
             this.suggester = suggester;
             this.usageLabels = usageLabels;
@@ -84,12 +77,7 @@ public final class ParameterBuilder<K extends CommandSender, V> {
         }
 
         @Override
-        public boolean canParse(final CommandInput input) {
-            return predicate.canParse(input);
-        }
-
-        @Override
-        public V parse(final CommandInput input, final K sender) {
+        public Optional<V> parse(final CommandInput input, final S sender) {
             return parser.parse(input, sender);
         }
 
@@ -99,7 +87,7 @@ public final class ParameterBuilder<K extends CommandSender, V> {
         }
 
         @Override
-        public Collection<String> getSuggestions(final K sender, final CommandInput input) {
+        public Collection<String> getSuggestions(final S sender, final CommandInput input) {
             return suggester.getSuggestions(sender, input);
         }
 

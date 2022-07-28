@@ -1,6 +1,5 @@
 package io.github.disbatch.command.parameter.usage;
 
-import io.github.disbatch.command.CommandInput;
 import io.github.disbatch.command.parameter.ParameterizedCommand;
 
 import java.util.Collection;
@@ -27,8 +26,8 @@ public final class NormalParameterUsage implements ParameterUsage {
     }
 
     @Override
-    public String toMessage(final CommandInput input, final Collection<String> usageLabels) {
-        final StringBuilder builder = new StringBuilder("/").append(String.join(" ", input.getAllCommandLabels()));
+    public String toMessage(final UnparsableInput input, final Collection<String> usageLabels) {
+        final StringBuilder builder = new StringBuilder("/").append(input.getCommandLabel());
 
         for (final String label : usageLabels)
             builder.append(" ").append(labelHead).append(label).append(labelTail);

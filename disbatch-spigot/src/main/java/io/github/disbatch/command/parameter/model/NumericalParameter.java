@@ -2,25 +2,22 @@ package io.github.disbatch.command.parameter.model;
 
 import io.github.disbatch.command.CommandInput;
 import io.github.disbatch.command.parameter.ParameterizedCommand;
-import io.github.disbatch.command.parameter.builder.Suggester;
 import org.bukkit.command.CommandSender;
+
+import java.util.Optional;
 
 /**
  * Holds the functionalities necessary to create or retrieve an {@link Object} relating to numeric use-cases based on
  * parsable, passed arguments.
  *
- * @param <K> {@inheritDoc}
+ * @param <S> {@inheritDoc}
  * @param <V> {@inheritDoc}
  */
-public abstract class NumericalParameter<K extends CommandSender, V> extends AbstractParameter<K, V> {
+public abstract class NumericalParameter<S extends CommandSender, V> extends AbstractParameter<S, V> {
     private static final String NUMBER_REGEX = "-?\\d+(\\.\\d+)?";
 
     protected NumericalParameter(final String... usageLabels) {
         super(usageLabels);
-    }
-
-    protected NumericalParameter(final Suggester<K> suggester, final String... usageLabels) {
-        super(suggester, usageLabels);
     }
 
     /**
@@ -29,12 +26,11 @@ public abstract class NumericalParameter<K extends CommandSender, V> extends Abs
      * @param input the arguments passed from a {@link ParameterizedCommand}
      * @return if the passed arguments can be parsed
      */
-    @Override
-    public boolean canParse(final CommandInput input) {
+    protected final Optional<V> numericOptional(final CommandInput input, final V result) {
         for (final String argument : input.getArguments())
-            if (!canParseNumber(argument)) return false;
+            if (!canParseNumber(argument)) return Optional.empty();
 
-        return true;
+        return Optional.of(result);
     }
 
     /**

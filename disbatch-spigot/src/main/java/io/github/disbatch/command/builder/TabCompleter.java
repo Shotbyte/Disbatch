@@ -9,12 +9,12 @@ import java.util.List;
  * @param <T>
  */
 @FunctionalInterface
-public interface TabCompleter<T extends CommandSender> {
+public interface TabCompleter<S extends CommandSender> {
 
     /**
      * @param sender
      * @param input
      * @return
      */
-    List<String> tabComplete(T sender, CommandInput input);
+    List<String> tabComplete(S sender, CommandInput input);
 }

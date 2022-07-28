@@ -1,6 +1,5 @@
 package io.github.disbatch.command.parameter.usage;
 
-import io.github.disbatch.command.CommandInput;
 import io.github.disbatch.command.parameter.ParameterizedCommand;
 
 import java.util.Collection;
@@ -15,5 +14,5 @@ public interface ParameterUsage {
      * @param usageLabels
      * @return
      */
-    String toMessage(CommandInput input, Collection<String> usageLabels);
+    String toMessage(UnparsableInput input, Collection<String> usageLabels);
 }

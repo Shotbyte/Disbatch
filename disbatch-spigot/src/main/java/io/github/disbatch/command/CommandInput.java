@@ -8,13 +8,6 @@ public interface CommandInput {
     /**
      * @return
      */
-    static CommandInput empty() {
-        return EmptyCommandInput.INSTANCE;
-    }
-
-    /**
-     * @return
-     */
     int getArgumentLength();
 
     /**
@@ -36,12 +29,7 @@ public interface CommandInput {
     /**
      * @return
      */
-    String[] getAllCommandLabels();
-
-    /**
-     * @return
-     */
-    String getRelativeCommandLabel();
+    String getCommandLabel();
 
     /**
      * @return

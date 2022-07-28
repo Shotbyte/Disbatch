@@ -7,13 +7,17 @@ import java.util.StringJoiner;
 
 class LazyLoadingCommandInput implements CommandInput {
     private final String[] arguments;
-    private final String[] singletonCmdLabel;
+    private final String cmdLabel;
     private String argumentLine;
     private String commandLine;
 
+    LazyLoadingCommandInput(final String argument, final String cmdLabel) {
+        this(new String[]{argument}, cmdLabel);
+    }
+
     LazyLoadingCommandInput(final String[] arguments, final String cmdLabel) {
         this.arguments = arguments;
-        singletonCmdLabel = new String[]{cmdLabel};
+        this.cmdLabel = cmdLabel;
     }
 
     @Override
@@ -27,13 +31,8 @@ class LazyLoadingCommandInput implements CommandInput {
     }
 
     @Override
-    public String[] getAllCommandLabels() {
-        return singletonCmdLabel;
-    }
-
-    @Override
-    public String getRelativeCommandLabel() {
-        return singletonCmdLabel[0];
+    public String getCommandLabel() {
+        return cmdLabel;
     }
 
     @Override
@@ -54,7 +53,7 @@ class LazyLoadingCommandInput implements CommandInput {
     @Override
     public String getCommandLine() {
         return commandLine == null
-                ? (commandLine = String.join(" ", singletonCmdLabel[0], getArgumentLine()))
+                ? (commandLine = String.join(" ", cmdLabel, getArgumentLine()))
                 : commandLine;
     }
 

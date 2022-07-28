@@ -7,11 +7,11 @@ import org.bukkit.command.CommandSender;
  * @param <T>
  */
 @FunctionalInterface
-public interface CommandExecutor<T extends CommandSender> {
+public interface CommandExecutor<S extends CommandSender> {
 
     /**
      * @param sender
      * @param input
      */
-    void execute(T sender, final CommandInput input);
+    void execute(S sender, final CommandInput input);
 }

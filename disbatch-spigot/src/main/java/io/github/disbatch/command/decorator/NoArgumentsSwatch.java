@@ -7,36 +7,36 @@ import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * @param <T> {@inheritDoc}
+ * @param <S> {@inheritDoc}
  */
-public final class NoArgumentsSwatch<T extends CommandSender> extends CommandProxy<T> {
-    private final Executor<T> executor;
+public final class NoArgumentsSwatch<S extends CommandSender> extends CommandProxy<S> {
+    private final Executor<S> executor;
 
     /**
      * @param innerCommand
      * @param executor
      */
-    public NoArgumentsSwatch(final Command<T> innerCommand, final Executor<T> executor) {
+    public NoArgumentsSwatch(final Command<S> innerCommand, final Executor<S> executor) {
         super(innerCommand);
         this.executor = executor;
     }
 
     @Override
-    public void execute(final T sender, final @NotNull CommandInput input) {
+    public void execute(final S sender, final @NotNull CommandInput input) {
         if (input.getArgumentLength() == 0) executor.execute(sender, input);
         else super.execute(sender, input);
     }
 
     /**
-     * @param <T>
+     * @param <S>
      */
     @FunctionalInterface
-    public interface Executor<T extends CommandSender> {
+    public interface Executor<S extends CommandSender> {
 
         /**
          * @param sender
          * @param input
          */
-        void execute(T sender, CommandInput input);
+        void execute(S sender, CommandInput input);
     }
 }

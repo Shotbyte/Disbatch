@@ -12,22 +12,22 @@ import java.util.List;
  * can be done via the {@code super} reference (e.g., to forward execution logic, call
  * {@link Command#execute(CommandSender, CommandInput)} on it).
  *
- * @param <T> {@inheritDoc}
+ * @param <S> {@inheritDoc}
  */
-public abstract class CommandProxy<T extends CommandSender> implements Command<T> {
-    private final Command<T> innerCommand;
+public abstract class CommandProxy<S extends CommandSender> implements Command<S> {
+    private final Command<S> innerCommand;
 
-    protected CommandProxy(final @NotNull Command<T> innerCommand) {
+    protected CommandProxy(final @NotNull Command<S> innerCommand) {
         this.innerCommand = innerCommand;
     }
 
     @Override
-    public void execute(final T sender, final @NotNull CommandInput input) {
+    public void execute(final S sender, final @NotNull CommandInput input) {
         innerCommand.execute(sender, input);
     }
 
     @Override
-    public List<String> tabComplete(final T sender, final @NotNull CommandInput input) {
+    public List<String> tabComplete(final S sender, final @NotNull CommandInput input) {
         return innerCommand.tabComplete(sender, input);
     }
 

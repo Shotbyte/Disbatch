@@ -11,4 +11,11 @@ public class ParameterException extends RuntimeException {
     public ParameterException(final String message) {
         super(message);
     }
+
+    /**
+     * @param cause
+     */
+    public ParameterException(final Exception cause) {
+        super(cause);
+    }
 }
