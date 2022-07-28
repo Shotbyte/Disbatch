@@ -23,6 +23,7 @@ class GroupedCommandExecutor<S extends CommandSender> {
         private final CommandInput previous;
         private final String cmdLabel;
         private String[] arguments;
+        private String argumentLine;
 
         private LazyLoadingGroupedCommandInput(final CommandInput previous, final String recentCmdLabel) {
             this.previous = previous;
@@ -36,7 +37,9 @@ class GroupedCommandExecutor<S extends CommandSender> {
 
         @Override
         public String getArgumentLine() {
-            return previous.getArgumentLine();
+            return argumentLine == null
+                    ? (argumentLine = String.join(" ", getArguments()))
+                    : argumentLine;
         }
 
         @Override
