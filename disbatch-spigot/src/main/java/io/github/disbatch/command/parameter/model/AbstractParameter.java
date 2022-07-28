@@ -49,13 +49,10 @@ public abstract class AbstractParameter<S extends CommandSender, V> implements P
 
     /**
      * @param suggester
-     * @param <SS>
-     * @param <VV>
      * @return
      */
-    @SuppressWarnings("unchecked")
-    public final <SS extends CommandSender, VV> Parameter<SS, VV> withSuggester(final @NotNull Suggester<SS> suggester) {
-        this.suggester = (Suggester<S>) suggester;
-        return (Parameter<SS, VV>) this;
+    public final Parameter<S, V> withSuggester(final @NotNull Suggester<S> suggester) {
+        this.suggester = suggester;
+        return this;
     }
 }

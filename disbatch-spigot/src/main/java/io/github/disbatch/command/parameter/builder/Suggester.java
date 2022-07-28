@@ -10,10 +10,10 @@ import java.util.Collection;
  * Serves the same purpose and functionality as {@link Parameter#getSuggestions(CommandSender, CommandInput)}.
  */
 @FunctionalInterface
-public interface Suggester<K> {
+public interface Suggester<S extends CommandSender> {
 
     /**
      * See {@link Suggester}.
      */
-    Collection<String> getSuggestions(K sender, CommandInput input);
+    Collection<String> getSuggestions(S sender, CommandInput input);
 }
