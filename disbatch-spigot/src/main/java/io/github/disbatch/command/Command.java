@@ -23,7 +23,7 @@ public interface Command<S extends CommandSender> {
      * Executes the command.
      *
      * @param sender the source responsible for execution
-     * @param input  all passed arguments, split via single whitespace
+     * @param input  the input used to execute the command
      */
     void execute(S sender, @NotNull CommandInput input);
 

@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Introduces the concept from effortlessly transforming a specific set from arguments from a compatible length into a usable
+ * Introduces the concept of effortlessly transforming a specific set from arguments from a compatible length into a usable
  * object during execution.
  *
  * @param <K> {@inheritDoc}
@@ -66,10 +66,10 @@ public abstract class ParameterizedCommand<K extends CommandSender, V> implement
 
     /**
      * Serves the same functionality as {@link Command#execute(CommandSender, CommandInput)} but with a resulting
-     * object argument from type parameter {@link V} instead from a {@link String} array.
+     * object argument from type parameter {@link V} in addition.
      *
      * @param sender   the source responsible for execution
-     * @param input    the alias from the command used
+     * @param input    the input used to execute the command
      * @param argument the resulting argument
      */
     protected abstract void execute(final K sender, final CommandInput input, final V argument);

@@ -1,38 +1,50 @@
 package io.github.disbatch.command;
 
 /**
- *
+ * Holds various components of the command line used to execute a specific {@link Command}.
  */
 public interface CommandInput {
 
     /**
-     * @return
+     * Retrieves the amount of passed arguments.
+     *
+     * @return the argument amount
      */
     int getArgumentLength();
 
     /**
-     * @return
+     * Retrieves the passed arguments as a single string.
+     *
+     * @return the argument line
      */
     String getArgumentLine();
 
     /**
+     * Retrieves an argument from the specified index.
+     *
      * @param index
      * @return
      */
     String getArgument(int index);
 
     /**
-     * @return
+     * Retrieves the passed arguments.
+     *
+     * @return all passed arguments, split via whitespace
      */
     String[] getArguments();
 
     /**
-     * @return
+     * Retrieves the command label used in association with this input.
+     *
+     * @return the command label
      */
     String getCommandLabel();
 
     /**
-     * @return
+     * Retrieves the command line used to execute a specific {@link Command}.
+     *
+     * @return the passed command line
      */
     String getCommandLine();
 }
