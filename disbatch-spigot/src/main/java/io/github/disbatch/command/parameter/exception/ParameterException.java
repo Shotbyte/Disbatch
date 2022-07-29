@@ -1,4 +1,4 @@
-package io.github.disbatch.command.parameter;
+package io.github.disbatch.command.parameter.exception;
 
 /**
  *

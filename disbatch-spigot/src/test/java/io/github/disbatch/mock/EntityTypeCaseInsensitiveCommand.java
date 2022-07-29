@@ -1,4 +1,4 @@
-package io.github.disbatch;
+package io.github.disbatch.mock;
 
 import io.github.disbatch.command.CommandInput;
 import io.github.disbatch.command.parameter.ParameterizedCommand;

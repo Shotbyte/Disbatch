@@ -1,8 +1,8 @@
 package io.github.disbatch;
 
 import io.github.disbatch.command.CommandDescriptor;
-import io.github.disbatch.command.CommandException;
-import io.github.disbatch.command.CommandExecutionException;
+import io.github.disbatch.command.exception.CommandException;
+import io.github.disbatch.command.exception.CommandExecutionException;
 import io.github.disbatch.command.proxy.TypedCommandProxy;
 import org.bukkit.Server;
 import org.bukkit.command.CommandMap;
@@ -57,13 +57,13 @@ class LegacyCommandRegistrar implements CommandRegistrar {
             if (sender == null)
                 throw new CommandExecutionException("CommandSender is null");
 
-            typedCommand.execute(sender, new LazyLoadingCommandInput(args, commandLabel));
+            typedCommand.execute(sender, Internals.computeInput(commandLabel, args));
             return true;
         }
 
         @Override
         public List<String> tabComplete(final CommandSender sender, final String alias, final String[] args) {
-            return typedCommand.tabComplete(sender, new LazyLoadingCommandInput(args, alias));
+            return typedCommand.tabComplete(sender, Internals.computeInput(alias, args));
         }
 
         @Override

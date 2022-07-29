@@ -3,6 +3,7 @@ package io.github.disbatch.command.parameter;
 import com.google.common.collect.ImmutableList;
 import io.github.disbatch.command.Command;
 import io.github.disbatch.command.CommandInput;
+import io.github.disbatch.command.parameter.exception.ParameterOutOfBoundsException;
 import io.github.disbatch.command.parameter.model.Parameter;
 import io.github.disbatch.command.parameter.usage.ParameterUsage;
 import io.github.disbatch.command.parameter.usage.UnparsableInput;

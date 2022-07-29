@@ -1,4 +1,4 @@
-package io.github.disbatch.command;
+package io.github.disbatch.command.exception;
 
 /**
  * @apiNote Not to be confused with {@link org.bukkit.command.CommandException}.

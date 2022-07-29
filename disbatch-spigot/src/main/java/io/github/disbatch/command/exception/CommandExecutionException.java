@@ -1,4 +1,4 @@
-package io.github.disbatch.command;
+package io.github.disbatch.command.exception;
 
 public class CommandExecutionException extends CommandException {
     /**

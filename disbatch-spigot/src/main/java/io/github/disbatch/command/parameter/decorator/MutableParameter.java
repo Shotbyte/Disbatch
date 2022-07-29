@@ -2,8 +2,8 @@ package io.github.disbatch.command.parameter.decorator;
 
 import com.google.common.collect.ImmutableList;
 import io.github.disbatch.command.CommandInput;
-import io.github.disbatch.command.parameter.ParameterException;
-import io.github.disbatch.command.parameter.ParameterParseException;
+import io.github.disbatch.command.parameter.exception.ParameterException;
+import io.github.disbatch.command.parameter.exception.ParameterParseException;
 import io.github.disbatch.command.parameter.model.Parameter;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;

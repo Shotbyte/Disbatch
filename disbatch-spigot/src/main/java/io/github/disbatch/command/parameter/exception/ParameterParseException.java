@@ -1,5 +1,6 @@
-package io.github.disbatch.command.parameter;
+package io.github.disbatch.command.parameter.exception;
 
+import io.github.disbatch.command.parameter.ParameterizedCommand;
 import io.github.disbatch.command.parameter.model.Parameter;
 
 /**

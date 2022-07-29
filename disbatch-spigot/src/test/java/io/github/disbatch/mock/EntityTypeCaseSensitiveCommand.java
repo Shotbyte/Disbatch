@@ -1,4 +1,4 @@
-package io.github.disbatch;
+package io.github.disbatch.mock;
 
 import io.github.disbatch.command.CommandInput;
 import io.github.disbatch.command.parameter.ParameterizedCommand;
@@ -9,7 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
 
 public class EntityTypeCaseSensitiveCommand extends ParameterizedCommand<CommandSender, EntityType> {
-    protected EntityTypeCaseSensitiveCommand(final ParameterUsage usage) {
+    public EntityTypeCaseSensitiveCommand(final ParameterUsage usage) {
         super(new EnumParameter<>(EntityType.class, "type")
                 .withSuggester(Suggesters.of(EntityType.values())), usage);
     }

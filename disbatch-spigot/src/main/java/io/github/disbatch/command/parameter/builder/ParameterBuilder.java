@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.Optional;
+import java.util.StringJoiner;
 
 /**
  * @param <S>
@@ -99,6 +100,17 @@ public final class ParameterBuilder<S extends CommandSender, V> {
         @Override
         public int getMaximumUsage() {
             return maxUsage;
+        }
+
+        @Override
+        public String toString() {
+            return new StringJoiner(", ", getClass().getSimpleName() + "[", "]")
+                    .add("parser=" + parser)
+                    .add("suggester=" + suggester)
+                    .add("usageLabels=" + usageLabels)
+                    .add("minUsage=" + minUsage)
+                    .add("maxUsage=" + maxUsage)
+                    .toString();
         }
     }
 }
