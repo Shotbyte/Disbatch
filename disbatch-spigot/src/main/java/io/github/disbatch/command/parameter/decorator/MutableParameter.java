@@ -40,6 +40,11 @@ public final class MutableParameter<S extends CommandSender, V> implements Param
     }
 
     @Override
+    public Collection<String> getSuggestions(final S sender, final CommandInput input) {
+        return underlyingParameter.getSuggestions(sender, input);
+    }
+
+    @Override
     public int getMinimumUsage() {
         return underlyingParameter.getMinimumUsage();
     }
