@@ -68,7 +68,7 @@ public final class MutableParameter<S extends CommandSender, V> implements Param
         }
 
         private ParameterException newParameterException() {
-            return new ParameterParseException("No actual underlying parameter has been set");
+            return new ParameterParseException("Cannot parse an empty parameter");
         }
 
         @Override
