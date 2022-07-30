@@ -32,7 +32,9 @@ public final class CommandGroup<S extends CommandSender> extends ParameterizedCo
         parameter.setUnderlyingParameter(ParameterBuilder.of(this)
                 .parser((input, sender) -> {
                     final GroupedCommand<? super S> groupedCommand = commands.get(input.getArgument(0));
-                    return groupedCommand == null ? Optional.empty() : Optional.of(new GroupedCommandExecutor<>(groupedCommand, input));
+                    return groupedCommand == null
+                            ? Optional.empty()
+                            : Optional.of(new GroupedCommandExecutor<>(groupedCommand, input));
                 })
                 .suggester(Suggesters.forFirstArgument(Suggesters.of(commands.keySet())))
                 .usageLabels(subcommandLabel)
