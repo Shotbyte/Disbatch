@@ -6,7 +6,6 @@ import io.github.disbatch.command.CommandInput;
 import io.github.disbatch.command.parameter.exception.ParameterOutOfBoundsException;
 import io.github.disbatch.command.parameter.model.Parameter;
 import io.github.disbatch.command.parameter.usage.ParameterUsage;
-import io.github.disbatch.command.parameter.usage.UnparsableInput;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
@@ -80,50 +79,5 @@ public abstract class ParameterizedCommand<K extends CommandSender, V> implement
         return input.getArgumentLength() <= parameter.getMaximumUsage()
                 ? new LinkedList<>(parameter.getSuggestions(sender, input))
                 : ImmutableList.of();
-    }
-
-    private static class UnparsableInputImpl implements UnparsableInput {
-        private final CommandInput cmdInput;
-        private final boolean isCompatibleLength;
-
-        private UnparsableInputImpl(final CommandInput cmdInput, final boolean isCompatibleLength) {
-            this.cmdInput = cmdInput;
-            this.isCompatibleLength = isCompatibleLength;
-        }
-
-        @Override
-        public int getArgumentLength() {
-            return cmdInput.getArgumentLength();
-        }
-
-        @Override
-        public String getArgumentLine() {
-            return cmdInput.getArgumentLine();
-        }
-
-        @Override
-        public String getArgument(final int index) {
-            return cmdInput.getArgument(index);
-        }
-
-        @Override
-        public String[] getArguments() {
-            return cmdInput.getArguments();
-        }
-
-        @Override
-        public String getCommandLabel() {
-            return cmdInput.getCommandLabel();
-        }
-
-        @Override
-        public String getCommandLine() {
-            return cmdInput.getCommandLine();
-        }
-
-        @Override
-        public boolean isCompatibleLength() {
-            return isCompatibleLength;
-        }
     }
 }
