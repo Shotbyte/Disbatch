@@ -77,6 +77,11 @@ public final class MutableParameter<S extends CommandSender, V> implements Param
         }
 
         @Override
+        public Collection<String> getSuggestions(final CommandSender sender, final CommandInput input) {
+            return ImmutableList.of();
+        }
+
+        @Override
         public int getMinimumUsage() {
             return 1;
         }

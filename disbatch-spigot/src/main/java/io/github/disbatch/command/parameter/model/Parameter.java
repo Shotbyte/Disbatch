@@ -1,6 +1,5 @@
 package io.github.disbatch.command.parameter.model;
 
-import com.google.common.collect.ImmutableList;
 import io.github.disbatch.command.CommandInput;
 import io.github.disbatch.command.parameter.ParameterizedCommand;
 import io.github.disbatch.command.parameter.builder.ParameterBuilder;
@@ -46,9 +45,7 @@ public interface Parameter<S extends CommandSender, V> {
      * @param input  the arguments passed from a {@link ParameterizedCommand} during tab completion
      * @return all possible suggestions for the parameter
      */
-    default Collection<String> getSuggestions(final S sender, final CommandInput input) {
-        return ImmutableList.of();
-    }
+    Collection<String> getSuggestions(final S sender, final CommandInput input);
 
     /**
      * Retrieves the minimum amount from arguments a {@link ParameterizedCommand} must pass.
